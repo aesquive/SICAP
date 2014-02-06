@@ -2,31 +2,36 @@ package com.example.page;
 
 import db.controller.DAO;
 import db.pojos.Cuenta;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import manager.session.SessionController;
 import manager.session.Variable;
 import org.apache.click.Context;
+import org.apache.click.control.AbstractLink;
 import org.apache.click.control.ActionLink;
 import org.apache.click.control.Column;
 import org.apache.click.control.Decorator;
-import org.apache.click.control.Table;
-import org.apache.click.dataprovider.DataProvider;
+import org.apache.click.control.FieldSet;
+import org.apache.click.control.Form;
+import org.apache.click.extras.control.FormTable;
+import org.apache.click.extras.control.LinkDecorator;
 import util.Reflector;
 
 /**
- * Clase que se encarga de poner detalles de cuentas pasados 
- * los datos deben de estar en el SessionController con el nombre "data"
- * 
+ * Clase que se encarga de poner detalles de cuentas pasados los datos deben de
+ * estar en el SessionController con el nombre "data"
+ *
  * @author zorin
  */
 public class TablePage extends BorderPage {
 
-    Table table;
+    FormTable table;
+    Form form;
     @Resource(name = "data")
-    List<Object> data;
-    private ActionLink detail;
+    List<Cuenta> data;
 
     /**
      * constructor
@@ -36,87 +41,68 @@ public class TablePage extends BorderPage {
         fillData();
     }
 
-    /**
-     * inicializa todo el proceso
-     */
     @Override
     public void init() {
-        table = new Table("table");
         data = SessionController.getVariable("data") == null ? null : (List) SessionController.getVariable("data").getValue();
-        detail = new ActionLink("detail", " Detalle ", this, "onDetailClick");
-        addControl(table);
-        addControl(detail);
-        if (data != null) {
-            Object val = Reflector.callMethod(data.get(0), null, "getColumns");
-            if (val == null) {
-                message = "Ocurrio un error y no encuentro informacion que mostrar";
-                return;
-            }
-            String[] columns = (String[]) val;
-            for (String c : columns) {
-                table.addColumn(new Column(c));
-            }
-            Column action = new Column("Acciones");
-            action.setDecorator(new Decorator() {
-                @Override
-                public String render(Object object, Context context) {
-                    Cuenta row = (Cuenta) object;
-                    if (row.getRef() != null && !row.getRef().equals("")) {
-                        detail.setValue(row.getIdCuenta()+"%"+row.getRef());
-                        return detail.toString();
-                    }
-                    detail.setValue(null);
-                    return null;
-                }
-            });
-            table.addColumn(action);
-        } else {
-            message = "Ocurrio un error y no encuentro informacion que mostrar";
-        }
-    }
+        form = new Form("form");
+        table = new FormTable("formTable", form);
 
-    /**
-     * llena la informacion de la tabla
-     */
-    private void fillData() {
-        table.setDataProvider(new DataProvider<Object>() {
-            public List<Object> getData() {
-                return data;
+        table.addColumn(new Column("IdCuenta"));
+        table.addColumn(new Column("Descripcion"));
+
+        for (int t = 0; t < data.size(); t++) {
+            ActionLink actionLink = new ActionLink("link" + data.get(t).getIdCuenta(), data.get(t).getValor().toString(), this, "onLinkClick");
+            actionLink.setValue(data.get(t).getIdCuenta().toString());
+            data.get(t).setActionLink(actionLink);
+            addControl(actionLink);
+        }
+        Column c = new Column("Valor");
+        c.setDecorator(new Decorator() {
+            @Override
+            public String render(Object object, Context context) {
+                Cuenta c = (Cuenta) object;
+                return c.getActionLink().toString();
             }
         });
+
+        table.addColumn(c);
+        FieldSet fs = new FieldSet("info");
+        form.add(fs);
+        fs.add(table);
+        //System.out.println("la cantidad de links " + links.length);
+        addControl(form);
     }
 
-    /**
-     * se encarga de cambiar la data que se va a renderizar cuando se quiere ver el detalle
-     * @return 
-     */
-    public boolean onDetailClick() {
-        String value = detail.getValue();
-        if (value != null) {
-            Cuenta clicked=null;
-            String[] valueRef=value.split("%");
-            List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
-            String[] split = valueRef[1].split(",");
-            List<Cuenta> newData = new LinkedList<Cuenta>();
-            for (String ref : split) {
-                for (Cuenta c : createQuery) {
-                    if (c.getIdCuenta().toString().equals(ref)) {
-                        newData.add(c);
+    private void fillData() {
+        table.setRowList(data);
+    }
+
+    public boolean onLinkClick() {
+        System.out.println("entra al linkclick");
+        for (int t = 0; t < data.size(); t++) {
+            if (data.get(t).getActionLink().isClicked()) {
+                Cuenta ref = data.get(t);
+                List<Cuenta> newData = new LinkedList<Cuenta>();
+                List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
+                if (ref.getRef() == null || ref.getRef().equals("")) {
+                    newData.add(ref);
+                } else {
+                    String[] split = ref.getRef().split(",");
+                    for (String sp : split) {
+                        for (Cuenta c : createQuery) {
+                            if (c.getIdCuenta().toString().equals(sp)) {
+                                newData.add(c);
+                            }
+                        }
                     }
                 }
+                setTitle("Detalle " + ref.getDescripcion());
+                SessionController.addVariable("data", new Variable("data", newData, List.class), true);
+                setRedirect(TablePage.class);
+                return true;
             }
-            for(Cuenta c:createQuery){
-                if(c.getIdCuenta().toString().equals(valueRef[0])){
-                    clicked=c;
-                    break;
-                }
-            }
-            setTitle("Detalle "+clicked.getDescripcion());
-            SessionController.addVariable("data", new Variable("data", newData, List.class), true);
-            setRedirect(TablePage.class);
-            return true;
         }
-        return false;
+        return true;
     }
 
 }

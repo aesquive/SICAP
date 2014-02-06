@@ -1,6 +1,9 @@
 package db.pojos;
 // Generated Feb 4, 2014 11:00:14 PM by Hibernate Tools 3.6.0
 
+import org.apache.click.control.ActionLink;
+
+
 
 
 /**
@@ -14,7 +17,8 @@ public class Cuenta  implements java.io.Serializable {
      private String ref;
      private String descripcion;
      private Integer status;
-
+     private ActionLink actionLink;
+     
     public Cuenta() {
     }
 
@@ -64,6 +68,20 @@ public class Cuenta  implements java.io.Serializable {
 
     public static String[] getColumns(){
         return new String[]{"Descripcion","Valor"};
+    }
+
+    /**
+     * @return the actionLink
+     */
+    public ActionLink getActionLink() {
+        return actionLink;
+    }
+
+    /**
+     * @param actionLink the actionLink to set
+     */
+    public void setActionLink(ActionLink actionLink) {
+        this.actionLink = actionLink;
     }
 
 

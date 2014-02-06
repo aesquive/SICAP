@@ -29,13 +29,13 @@ public class DAO {
         Transaction beginTransaction = session.beginTransaction();
         Criteria createCriteria = session.createCriteria(clase);
         if (criterios != null) {
-
+            
             for (Criterion cr : criterios) {
                 createCriteria.add(cr);
             }
             beginTransaction.commit();
         }
-        
+            
             return createCriteria.list();
     }
 
