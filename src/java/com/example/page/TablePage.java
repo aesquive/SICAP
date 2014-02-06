@@ -16,6 +16,7 @@ import org.apache.click.control.Column;
 import org.apache.click.control.Decorator;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
+import org.apache.click.control.Table;
 import org.apache.click.extras.control.FormTable;
 import org.apache.click.extras.control.LinkDecorator;
 import util.Reflector;
@@ -43,13 +44,22 @@ public class TablePage extends BorderPage {
 
     @Override
     public void init() {
+        //inicializamos valores 
         data = SessionController.getVariable("data") == null ? null : (List) SessionController.getVariable("data").getValue();
         form = new Form("form");
-        table = new FormTable("formTable", form);
+        table = new FormTable("table", form);
+        table.setPageNumber(0);
+        table.setClass(Table.CLASS_ORANGE2);
+        table.setWidth("900px");
+        //ponemos las primeras columnas
+        Column cID=new Column("IdCuenta");
+        cID.setWidth("35%");
+        table.addColumn(cID);
+        Column dID=new Column("Descripcion");
+        dID.setWidth("40%");
+        table.addColumn(dID);
 
-        table.addColumn(new Column("IdCuenta"));
-        table.addColumn(new Column("Descripcion"));
-
+        //ponemos los links de los montos para hacerlo recursivo
         for (int t = 0; t < data.size(); t++) {
             ActionLink actionLink = new ActionLink("link" + data.get(t).getIdCuenta(), data.get(t).getValor().toString(), this, "onLinkClick");
             actionLink.setValue(data.get(t).getIdCuenta().toString());
@@ -57,6 +67,7 @@ public class TablePage extends BorderPage {
             addControl(actionLink);
         }
         Column c = new Column("Valor");
+        c.setWidth("25%");
         c.setDecorator(new Decorator() {
             @Override
             public String render(Object object, Context context) {
@@ -64,19 +75,28 @@ public class TablePage extends BorderPage {
                 return c.getActionLink().toString();
             }
         });
-
         table.addColumn(c);
-        FieldSet fs = new FieldSet("info");
+        
+        //pegamos todo en nuestro fieldset
+        FieldSet fs = new FieldSet("Datos");
+        
         form.add(fs);
         fs.add(table);
         //System.out.println("la cantidad de links " + links.length);
         addControl(form);
     }
 
+    /**
+     * llena la tabla de informacion;
+     */
     private void fillData() {
         table.setRowList(data);
     }
 
+    /**
+     * evento que nos ayuda a checar si se da click en alguno de los valores 
+     * @return 
+     */
     public boolean onLinkClick() {
         System.out.println("entra al linkclick");
         for (int t = 0; t < data.size(); t++) {

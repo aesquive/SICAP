@@ -1,9 +1,9 @@
 <html>
     <head>
         <title>$title</title>
+        $headElements
         <link rel="stylesheet" type="text/css" href="$context/css/style.css" title="Style"/>
     </head>
-
     <body>
     <center>
         <div id="header">
@@ -13,7 +13,7 @@
     <div>
         <br/>
         #if ($userName)
-        <a id="message">Usuario : $userName</a>
+        <a id="userName">Usuario : $userName</a>
         #end
 
         <br/>
@@ -23,7 +23,7 @@
 
     </div>
 
-    <div id="container">
+    <div style="width: 100%" id="container">
         #parse($path)
     </div>
 

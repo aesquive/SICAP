@@ -47,4 +47,11 @@ public abstract class BorderPage extends Page {
     public void setTitle(String title){
         SessionController.addVariable("title", new Variable("title",title, String.class), true);
     }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
 }
