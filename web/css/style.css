@@ -81,12 +81,16 @@ label{
     color: white;
 }
 
+/*definicion de la parte del usuario*/
 #userName{
-    font-size: 15px;
-    position: relative;
-    margin-left: 90%;
-
+    position: absolute;
+    margin-left:  60%;
+    background-color: transparent;
+    color:orangered; 
+    font-size: 1.2em;
+    font-weight: bold;
 }
+
 
 
 #title {
@@ -106,4 +110,15 @@ label{
     position: relative;
     z-index: 0;
     width: 100%;
+}
+
+
+
+#logOut{
+    position: absolute;
+    margin-left:  68%;
+    background-color: transparent;
+    color:orangered; 
+    font-size: 1.2em;
+    font-weight: bold;    
 }

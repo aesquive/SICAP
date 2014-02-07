@@ -10,20 +10,18 @@
         $rootMenu
         #end
         <br/>
-
-        #if ($title)
-        <div id="title">
-            <span >$title</span>
+        <div>
+            #if ($title)
+            <span id="title">$title</span>
+            #end
+            #if ($userName)
+            <span id="userName">$userName</span>
+            <span id="logOut">$logOut</span>
+            #end
         </div>
-        #end
 
-        <br/>
-        #if ($userName)
-        <a id="userName">Usuario : $userName</a>
-        #end
-        <br/>
         #if ($message)
-        <a id="message">$message</a>
+        <a>$message</a>
         #end
 
 
