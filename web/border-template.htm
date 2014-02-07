@@ -1,31 +1,35 @@
 <html>
     <head>
-        <title>$title</title>
-        $headElements
+        #if ($title)
+        <title>SICAP $title</title>
+        #end
         <link rel="stylesheet" type="text/css" href="$context/css/style.css" title="Style"/>
     </head>
     <body>
-    <center>
-        <div id="header">
-            <span id="title">$title</span>
+        #if ($rootMenu)
+        $rootMenu
+        #end
+        <br/>
+
+        #if ($title)
+        <div id="title">
+            <span >$title</span>
         </div>
-    </center>
-    <div>
+        #end
+
         <br/>
         #if ($userName)
         <a id="userName">Usuario : $userName</a>
         #end
-
         <br/>
         #if ($message)
         <a id="message">$message</a>
         #end
 
-    </div>
 
-    <div style="width: 100%" id="container">
-        #parse($path)
-    </div>
+        <div style="width: 100%" id="container">
+            #parse($path)
+        </div>
 
-</body>
+    </body>
 </html> 

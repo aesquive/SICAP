@@ -11,6 +11,8 @@ import org.apache.click.control.Form;
 import org.apache.click.control.PasswordField;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
+import org.apache.click.extras.control.Menu;
+import org.apache.click.extras.control.MenuFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
@@ -40,9 +42,8 @@ public class LoginPage extends Page {
      * */
     public LoginPage() {
         init();
-        SessionController.cleanMap();
         //como es la pagina de login limpiamos toda la sesion pasada
-        title = "Acceso a usuarios";
+        SessionController.cleanMap();
         //agregamos el form a la pantalla
         addControl(form);
         //le damos el setup al form
