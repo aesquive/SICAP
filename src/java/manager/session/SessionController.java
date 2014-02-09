@@ -12,7 +12,7 @@ import java.util.Map;
 public class SessionController {
 
     
-    private static Map<String,Variable> map;
+    private  Map<String,Variable> map;
     
     
     /**
@@ -22,10 +22,8 @@ public class SessionController {
      * @param force
      * @return 
      */
-    public static boolean addVariable(String name,Variable var , boolean force){
-        if(map==null){
-            map=new HashMap<String, Variable>();
-        }
+    public  boolean addVariable(String name,Variable var , boolean force){
+        map=new HashMap<String, Variable>();
         if(map.get(name)!=null && !force){
             return false;
         }
@@ -36,7 +34,7 @@ public class SessionController {
     /**
      * limpia todas las variables
      */
-    public static void cleanMap(){
+    public  void cleanSession(){
         if(map==null){
             map=new HashMap<String, Variable>();
         }
@@ -48,7 +46,7 @@ public class SessionController {
      * @param name
      * @return 
      */
-    public  static Variable getVariable(String name) {
+    public   Variable getVariable(String name) {
         if(map==null){
             map=new HashMap<String, Variable>();
         }

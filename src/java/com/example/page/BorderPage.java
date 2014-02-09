@@ -5,17 +5,20 @@ import manager.session.SessionController;
 import manager.session.Variable;
 import org.apache.click.Page;
 import org.apache.click.control.ActionLink;
+import org.apache.click.control.Button;
 import org.apache.click.extras.control.Menu;
 import org.apache.click.extras.control.MenuFactory;
+import util.ContextManager;
 
 public abstract class BorderPage extends Page {
 
     public String userName;
     public String title;
     public String message;
-    public ActionLink logOut;
+    public String numberContext;
     private Menu rootMenu;
-
+    public SessionController sessionController;
+    
     public BorderPage() {
         addCommonControls();
         init();
@@ -39,7 +42,7 @@ public abstract class BorderPage extends Page {
      * pone el titulo de la pagina
      */
     public void setTitle(String title) {
-        SessionController.addVariable("title", new Variable("title", title, String.class), true);
+        sessionController.addVariable("title", new Variable("title", title, String.class), true);
     }
 
     /**
@@ -52,8 +55,6 @@ public abstract class BorderPage extends Page {
         rootMenu.setId("rootMenu");
         addControl(rootMenu);
         
-        logOut=new ActionLink("logOut", "Salir",this, "onLogOut");
-        addControl(logOut);
     }
 
     /**
@@ -61,8 +62,7 @@ public abstract class BorderPage extends Page {
      * @return 
      */
     public boolean onLogOut(){
-        setRedirect(LoginPage.class);
-        SessionController.cleanMap();
+        ContextManager.cleanMap();
         return true;
     }
     
@@ -71,17 +71,23 @@ public abstract class BorderPage extends Page {
      */
     private void checkSessionVars() {
 
-        if (SessionController.getVariable("user") != null) {
-            Variable user = SessionController.getVariable("user");
+        if (sessionController.getVariable("user") != null) {
+            Variable user = sessionController.getVariable("user");
             if (user != null) {
                 userName = ((User) user.getValue()).getUser();
             }
         }
-        if (SessionController.getVariable("title") != null) {
-            Variable titlevar = SessionController.getVariable("title");
+        if (sessionController.getVariable("title") != null) {
+            Variable titlevar = sessionController.getVariable("title");
             if (titlevar != null) {
                 title = (String) titlevar.getValue();
             }
+        }
+        if (sessionController.getVariable("numContext")!=null){
+           Variable numContextVar=sessionController.getVariable("numContext");
+           if(numContextVar!=null){
+               numberContext=(String) numContextVar.getValue();
+           }
         }
     }
 }

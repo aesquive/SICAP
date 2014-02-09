@@ -11,10 +11,9 @@ import org.apache.click.control.Form;
 import org.apache.click.control.PasswordField;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
-import org.apache.click.extras.control.Menu;
-import org.apache.click.extras.control.MenuFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import util.ContextManager;
 
 /**
  * Clase que maneja toda la seccion del Login
@@ -43,7 +42,7 @@ public class LoginPage extends Page {
     public LoginPage() {
         init();
         //como es la pagina de login limpiamos toda la sesion pasada
-        SessionController.cleanMap();
+        
         //agregamos el form a la pantalla
         addControl(form);
         //le damos el setup al form
@@ -78,7 +77,9 @@ public class LoginPage extends Page {
             message = "Usuario y/o password incorrecto";
             return false;
         }
-        SessionController.addVariable("user", new Variable("user", user, User.class), true);
+        SessionController sessionController=new SessionController();
+        sessionController.addVariable("user", new Variable("user", user, String.class), true);
+        ContextManager.addSessionController(sessionController);
         redireccionar();
         return true;
     }
@@ -101,9 +102,9 @@ public class LoginPage extends Page {
      * este METODO DEBE MODIFICARSE PARA ENVIAR AL MENU PRINCIPAL PRIMERO
      */
     private void redireccionar() {
-        List<Cuenta> transformarCuentas =DAO.createQuery(Cuenta.class,new Criterion[]{Restrictions.eq("idCuenta",3)});
-        SessionController.addVariable("title",new Variable("title","Datos Activo", String.class),true);
-        SessionController.addVariable("data", new Variable("data",transformarCuentas, List.class),true);
+        List<Cuenta> createQuery = DAO.createQuery(Cuenta.class,new Criterion[]{Restrictions.like("idCuenta", 3)});
+        SessionController sessionController = ContextManager.getSessionController(ContextManager.actualContext);
+        sessionController.addVariable("data",new Variable("data", createQuery, List.class),true);
         setRedirect(TablePage.class);
     }
 

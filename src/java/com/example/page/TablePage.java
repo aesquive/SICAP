@@ -2,15 +2,12 @@ package com.example.page;
 
 import db.controller.DAO;
 import db.pojos.Cuenta;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Resource;
 import manager.session.SessionController;
 import manager.session.Variable;
 import org.apache.click.Context;
-import org.apache.click.control.AbstractLink;
 import org.apache.click.control.ActionLink;
 import org.apache.click.control.Column;
 import org.apache.click.control.Decorator;
@@ -18,8 +15,7 @@ import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
 import org.apache.click.control.Table;
 import org.apache.click.extras.control.FormTable;
-import org.apache.click.extras.control.LinkDecorator;
-import util.Reflector;
+import util.ContextManager;
 
 /**
  * Clase que se encarga de poner detalles de cuentas pasados los datos deben de
@@ -44,8 +40,8 @@ public class TablePage extends BorderPage {
 
     @Override
     public void init() {
-        //inicializamos valores 
-        data = SessionController.getVariable("data") == null ? null : (List) SessionController.getVariable("data").getValue();
+        sessionController=ContextManager.getSessionController(ContextManager.actualContext);
+        data = sessionController.getVariable("data") == null ? null : (List) sessionController.getVariable("data").getValue();
         form = new Form("form");
         table = new FormTable("table", form);
         table.setPageNumber(0);
@@ -79,7 +75,6 @@ public class TablePage extends BorderPage {
         
         //pegamos todo en nuestro fieldset
         FieldSet fs = new FieldSet("Datos");
-        
         form.add(fs);
         fs.add(table);
         //System.out.println("la cantidad de links " + links.length);
@@ -98,7 +93,6 @@ public class TablePage extends BorderPage {
      * @return 
      */
     public boolean onLinkClick() {
-        System.out.println("entra al linkclick");
         for (int t = 0; t < data.size(); t++) {
             if (data.get(t).getActionLink().isClicked()) {
                 Cuenta ref = data.get(t);
@@ -117,7 +111,7 @@ public class TablePage extends BorderPage {
                     }
                 }
                 setTitle("Detalle " + ref.getDescripcion());
-                SessionController.addVariable("data", new Variable("data", newData, List.class), true);
+                sessionController.addVariable("data", new Variable("data", newData, List.class), true);
                 setRedirect(TablePage.class);
                 return true;
             }
