@@ -5,7 +5,7 @@
         #end
         <link rel="stylesheet" type="text/css" href="$context/css/style.css" title="Style"/>
     </head>
-    <body>
+    <body style="width: 100%">
         #if ($rootMenu)
         $rootMenu
         #end
@@ -16,10 +16,9 @@
             #end
             #if ($userName)
             <span id="userName">$userName</span>
-            <span id="logOut">$logOut</span>
             #end
         </div>
-
+        
         #if ($message)
         <a>$message</a>
         #end
