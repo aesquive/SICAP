@@ -1,3 +1,14 @@
+a:link {text-decoration:underline;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:underline;}
+a:active {text-decoration:underline;}
+
+a:link {color:#FF7519;}      /* unvisited link */
+a:visited {color:#FF7519;}  /* visited link */
+a:hover {color:white;}  /* mouse over link */
+a:active {color:#FF7519;}  /* selected link */
+
+
 body {
     font:1em "Lucida Sans Unicode","Lucida Grande",sans-serif;
     //background: -webkit-linear-gradient(bottom,black, grey); /* For Safari */
@@ -65,7 +76,7 @@ input[type=password]{
 }
 
 input[type=submit]{
-    
+
     background-color: white;
     color: black;
     font-weight: bolder;
@@ -84,7 +95,7 @@ label{
 /*definicion de la parte del usuario*/
 #userName{
     position: absolute;
-    margin-left:  60%;
+    margin-left:  65%;
     background-color: transparent;
     color:orangered; 
     font-size: 1.2em;
@@ -114,11 +125,37 @@ label{
 
 
 
-#logOut{
-    position: absolute;
-    margin-left:  68%;
-    background-color: transparent;
-    color:orangered; 
-    font-size: 1.2em;
-    font-weight: bold;    
+
+
+/*edicion sobre tabla de datos de cuentas*/
+#dataTable{
+    width: 60em;
+    border: 2px solid;
+    border-color: #FF9933;
+    border-spacing: 1em;
+    border-radius: 7px;
+    background-color: black;
+}
+
+#dataTable th{
+    background-color: #FF9933;
+    border-radius: 5px;
+    border-width: 5px;
+    color: black;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+#dataTable td{
+    border: 3px solid white;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+#dataTable td a{
+    color:white;
+}
+
+#dataTable td a:hover{
+    color:#FF7519;
 }
