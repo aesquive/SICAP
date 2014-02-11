@@ -5,7 +5,8 @@ import manager.session.SessionController;
 import manager.session.Variable;
 import org.apache.click.Page;
 import org.apache.click.control.ActionLink;
-import org.apache.click.control.Button;
+import org.apache.click.control.Form;
+import org.apache.click.control.Submit;
 import org.apache.click.extras.control.Menu;
 import org.apache.click.extras.control.MenuFactory;
 import util.ContextManager;
@@ -15,11 +16,16 @@ public abstract class BorderPage extends Page {
     public String userName;
     public String title;
     public String message;
-    public String numberContext;
+    public int numberContext;
     private Menu rootMenu;
+    public ActionLink goBack;
+    public ActionLink goForward;
+    public Form buttonsForm;
     public SessionController sessionController;
-    
+
     public BorderPage() {
+        buttonsForm=new Form("buttonsForm");
+        sessionController = ContextManager.getSessionController(ContextManager.actualContext);
         addCommonControls();
         init();
         checkSessionVars();
@@ -46,7 +52,7 @@ public abstract class BorderPage extends Page {
     }
 
     /**
-     * agrega el Menu de inicio
+     * agrega el Menu de inicio y los botones de atras y adelante
      */
     private void addCommonControls() {
         MenuFactory menuFactory = new MenuFactory();
@@ -54,23 +60,56 @@ public abstract class BorderPage extends Page {
         rootMenu.setName("rootMenu");
         rootMenu.setId("rootMenu");
         addControl(rootMenu);
-        
+        addControl(buttonsForm);
+        if (ContextManager.getSessionController(ContextManager.actualContext + 1) != null) {
+            goForward=new ActionLink("forwardLink", "", this, "forwardClicked");
+            goForward.setImageSrc("/img/forward.png");
+            buttonsForm.add(goForward);
+        }
+        if (ContextManager.getSessionController(ContextManager.actualContext - 1) != null && ContextManager.actualContext != 1) {
+            goBack=new ActionLink("backLink", "backLink", this, "backClicked");
+            goBack.setImageSrc("/img/back.png");
+            buttonsForm.add(goBack);
+        }
+        addControl(buttonsForm);
+    }
+
+    /**
+     * evento que se lanza cuando el boton de forward es apretado
+     *
+     * @return
+     */
+    public boolean forwardClicked() {
+        ContextManager.actualContext++;
+        setRedirect(TablePage.class);
+        return true;
+    }
+
+    /**
+     * evento que se lanza cuando el boton de back es apretado
+     *
+     * @return
+     */
+    public boolean backClicked() {
+        ContextManager.actualContext--;
+        setRedirect(TablePage.class);
+        return true;
     }
 
     /**
      * evento que se lanza cuando se aprieta salir
-     * @return 
+     *
+     * @return
      */
-    public boolean onLogOut(){
+    public boolean onLogOut() {
         ContextManager.cleanMap();
         return true;
     }
-    
+
     /**
      * Verifica las variables de sesion y trae los respectivos valores
      */
     private void checkSessionVars() {
-
         if (sessionController.getVariable("user") != null) {
             Variable user = sessionController.getVariable("user");
             if (user != null) {
@@ -83,11 +122,19 @@ public abstract class BorderPage extends Page {
                 title = (String) titlevar.getValue();
             }
         }
-        if (sessionController.getVariable("numContext")!=null){
-           Variable numContextVar=sessionController.getVariable("numContext");
-           if(numContextVar!=null){
-               numberContext=(String) numContextVar.getValue();
-           }
+        if (sessionController.getVariable("numContext") != null) {
+            Variable numContextVar = sessionController.getVariable("numContext");
+            if (numContextVar != null) {
+                numberContext = Integer.parseInt(numContextVar.getValue().toString());
+            }
         }
     }
+
+    public void newContext() {
+        SessionController newSessionController = new SessionController();
+        sessionController.copySession(newSessionController);
+        ContextManager.addSessionController(newSessionController);
+        sessionController = ContextManager.getSessionController(ContextManager.actualContext);
+    }
+
 }

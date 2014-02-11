@@ -3,6 +3,7 @@ package manager.session;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Clase que maneja todas las variables de sesion guardandolas en un mapa , 
@@ -51,6 +52,14 @@ public class SessionController {
             map=new HashMap<String, Variable>();
         }
         return map.get(name);
+    }
+
+    public void copySession(SessionController newSessionController) {
+        Set<String> keys = map.keySet();
+        for(String s:keys){
+            Variable get = map.get(s);
+            newSessionController.addVariable(s, new Variable(get.getName(),get.getValue(), get.getValueClass()), true);
+        }
     }
     
     

@@ -7,7 +7,8 @@ package manager.session;
  * 
  * @author zorin
  */
-public class Variable {
+public class Variable implements Cloneable{
+    
     
    private String name;
    private Object value;
@@ -59,5 +60,9 @@ public class Variable {
      */
     public void setValueClass(Class valueClass) {
         this.valueClass = valueClass;
+    }
+    
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }

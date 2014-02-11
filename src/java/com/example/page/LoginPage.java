@@ -40,6 +40,7 @@ public class LoginPage extends Page {
      *genera el constructor del login
      * */
     public LoginPage() {
+        ContextManager.cleanMap();
         init();
         //como es la pagina de login limpiamos toda la sesion pasada
         

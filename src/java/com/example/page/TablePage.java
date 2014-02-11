@@ -5,7 +5,6 @@ import db.pojos.Cuenta;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
-import manager.session.SessionController;
 import manager.session.Variable;
 import org.apache.click.Context;
 import org.apache.click.control.ActionLink;
@@ -15,7 +14,6 @@ import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
 import org.apache.click.control.Table;
 import org.apache.click.extras.control.FormTable;
-import util.ContextManager;
 
 /**
  * Clase que se encarga de poner detalles de cuentas pasados los datos deben de
@@ -40,7 +38,6 @@ public class TablePage extends BorderPage {
 
     @Override
     public void init() {
-        sessionController=ContextManager.getSessionController(ContextManager.actualContext);
         data = sessionController.getVariable("data") == null ? null : (List) sessionController.getVariable("data").getValue();
         form = new Form("form");
         table = new FormTable("table", form);
@@ -72,7 +69,6 @@ public class TablePage extends BorderPage {
             }
         });
         table.addColumn(c);
-        
         //pegamos todo en nuestro fieldset
         FieldSet fs = new FieldSet("Datos");
         form.add(fs);
@@ -110,6 +106,7 @@ public class TablePage extends BorderPage {
                         }
                     }
                 }
+                newContext();
                 setTitle("Detalle " + ref.getDescripcion());
                 sessionController.addVariable("data", new Variable("data", newData, List.class), true);
                 setRedirect(TablePage.class);
@@ -118,5 +115,6 @@ public class TablePage extends BorderPage {
         }
         return true;
     }
+
 
 }
