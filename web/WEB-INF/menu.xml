@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu>
-    <menu label="Menu2" path="redirect.html"/>
+    <menu label="Salir" path="redirect.html"/>
+    
+    <menu label="Salir2" path="redirect.html"/>
 </menu>

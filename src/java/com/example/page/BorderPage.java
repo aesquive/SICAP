@@ -6,29 +6,27 @@ import manager.session.Variable;
 import org.apache.click.Page;
 import org.apache.click.control.ActionLink;
 import org.apache.click.control.Form;
-import org.apache.click.control.Submit;
 import org.apache.click.extras.control.Menu;
 import org.apache.click.extras.control.MenuFactory;
 import util.ContextManager;
+import util.UserManager;
 
 public abstract class BorderPage extends Page {
 
-    public String userName;
     public String title;
     public String message;
-    public int numberContext;
     private Menu rootMenu;
     public ActionLink goBack;
     public ActionLink goForward;
-    public Form buttonsForm;
-    public SessionController sessionController;
-
+    public Form forwardForm;
+    public Form backwardForm;
+    public ContextManager context;
+    
     public BorderPage() {
-        buttonsForm=new Form("buttonsForm");
-        sessionController = ContextManager.getSessionController(ContextManager.actualContext);
+        System.out.println("la sesion que lo pidio "+getContext().getSessionAttribute("user").toString());
         addCommonControls();
-        init();
         checkSessionVars();
+        init();
     }
 
     /**
@@ -48,7 +46,7 @@ public abstract class BorderPage extends Page {
      * pone el titulo de la pagina
      */
     public void setTitle(String title) {
-        sessionController.addVariable("title", new Variable("title", title, String.class), true);
+        UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).addVariable("title", new Variable("title", title, String.class), true);
     }
 
     /**
@@ -60,18 +58,25 @@ public abstract class BorderPage extends Page {
         rootMenu.setName("rootMenu");
         rootMenu.setId("rootMenu");
         addControl(rootMenu);
-        addControl(buttonsForm);
-        if (ContextManager.getSessionController(ContextManager.actualContext + 1) != null) {
-            goForward=new ActionLink("forwardLink", "", this, "forwardClicked");
+        if (UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext+1) != null) {
+            forwardForm=new Form("forwardForm");
+            addControl(forwardForm);
+            goForward = new ActionLink("forwardLink", "", this, "forwardClicked");
+            goForward.setName("forwardLink");
+            goForward.setId("forwardLink");
             goForward.setImageSrc("/img/forward.png");
-            buttonsForm.add(goForward);
+            forwardForm.add(goForward);
         }
-        if (ContextManager.getSessionController(ContextManager.actualContext - 1) != null && ContextManager.actualContext != 1) {
-            goBack=new ActionLink("backLink", "backLink", this, "backClicked");
+        if (UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext-1) != null 
+                && UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext != 1) {
+            backwardForm=new Form("backwardForm");
+            addControl(backwardForm);
+            goBack = new ActionLink("backLink", "", this, "backClicked");
             goBack.setImageSrc("/img/back.png");
-            buttonsForm.add(goBack);
+            goBack.setName("backLink");
+            goBack.setId("backLink");
+            backwardForm.add(goBack);
         }
-        addControl(buttonsForm);
     }
 
     /**
@@ -80,7 +85,7 @@ public abstract class BorderPage extends Page {
      * @return
      */
     public boolean forwardClicked() {
-        ContextManager.actualContext++;
+        UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext++;
         setRedirect(TablePage.class);
         return true;
     }
@@ -91,7 +96,7 @@ public abstract class BorderPage extends Page {
      * @return
      */
     public boolean backClicked() {
-        ContextManager.actualContext--;
+        UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext--;
         setRedirect(TablePage.class);
         return true;
     }
@@ -102,7 +107,11 @@ public abstract class BorderPage extends Page {
      * @return
      */
     public boolean onLogOut() {
-        ContextManager.cleanMap();
+        UserManager.clearContext(Integer.parseInt(getContext().getSessionAttribute("user").toString()));
+        if(context!=null){
+            context.cleanMap();
+        }
+        getContext().removeSessionAttribute("user");
         return true;
     }
 
@@ -110,31 +119,20 @@ public abstract class BorderPage extends Page {
      * Verifica las variables de sesion y trae los respectivos valores
      */
     private void checkSessionVars() {
-        if (sessionController.getVariable("user") != null) {
-            Variable user = sessionController.getVariable("user");
-            if (user != null) {
-                userName = ((User) user.getValue()).getUser();
-            }
-        }
-        if (sessionController.getVariable("title") != null) {
-            Variable titlevar = sessionController.getVariable("title");
+        if (UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("title") != null) {
+            Variable titlevar = UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("title");
             if (titlevar != null) {
                 title = (String) titlevar.getValue();
+                System.out.println("el titulo es "+title);
             }
         }
-        if (sessionController.getVariable("numContext") != null) {
-            Variable numContextVar = sessionController.getVariable("numContext");
-            if (numContextVar != null) {
-                numberContext = Integer.parseInt(numContextVar.getValue().toString());
-            }
-        }
+        
     }
 
-    public void newContext() {
+    public void newContext() { 
         SessionController newSessionController = new SessionController();
-        sessionController.copySession(newSessionController);
-        ContextManager.addSessionController(newSessionController);
-        sessionController = ContextManager.getSessionController(ContextManager.actualContext);
+        UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).copySession(newSessionController);
+        UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).addSessionController(newSessionController);
     }
 
 }

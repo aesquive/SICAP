@@ -3,7 +3,9 @@ package com.example.page;
 import db.controller.DAO;
 import db.pojos.Cuenta;
 import db.pojos.User;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import manager.session.SessionController;
 import manager.session.Variable;
 import org.apache.click.Page;
@@ -14,6 +16,7 @@ import org.apache.click.control.TextField;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import util.ContextManager;
+import util.UserManager;
 
 /**
  * Clase que maneja toda la seccion del Login
@@ -22,12 +25,12 @@ import util.ContextManager;
  */
 public class LoginPage extends Page {
 
-    private Form form = new Form("form");
+    private Form loginForm = new Form("form");
     private PasswordField passwordField;
     private TextField userField;
     public String title;
     public String message;
-
+    public boolean login=true;
     /**
      * obtienes la parte del estilo de la pagina
      */
@@ -40,23 +43,23 @@ public class LoginPage extends Page {
      *genera el constructor del login
      * */
     public LoginPage() {
-        ContextManager.cleanMap();
+        getContext().removeSessionAttribute("user");
         init();
         //como es la pagina de login limpiamos toda la sesion pasada
         
         //agregamos el form a la pantalla
-        addControl(form);
+        addControl(loginForm);
         //le damos el setup al form
-        form.add(userField);
-        form.add(passwordField);
-        form.add(new Submit("okSubmit", " OK ", this, "okClicked"));
+        loginForm.add(userField);
+        loginForm.add(passwordField);
+        loginForm.add(new Submit("okSubmit", " OK ", this, "okClicked"));
     }
 
     /**
      * metodo inicial
      */
     public void init() {
-        form = new Form("form");
+        loginForm = new Form("form");
         passwordField = new PasswordField("password", " Password ", true);
         userField = new TextField("usuario", " Usuario ", true);
         passwordField.setMaxLength(10);
@@ -69,7 +72,7 @@ public class LoginPage extends Page {
      * @return 
      */
     public boolean okClicked() {
-        if (!form.isValid()) {
+        if (!loginForm.isValid()) {
             message = "Favor de completar los campos";
             return false;
         }
@@ -80,8 +83,8 @@ public class LoginPage extends Page {
         }
         SessionController sessionController=new SessionController();
         sessionController.addVariable("user", new Variable("user", user, String.class), true);
-        ContextManager.addSessionController(sessionController);
-        redireccionar();
+        getContext().setSessionAttribute("user",user.getIduser());
+        redireccionar(sessionController);
         return true;
     }
     /**
@@ -102,11 +105,13 @@ public class LoginPage extends Page {
     /**
      * este METODO DEBE MODIFICARSE PARA ENVIAR AL MENU PRINCIPAL PRIMERO
      */
-    private void redireccionar() {
+    private void redireccionar(SessionController controller) {
         List<Cuenta> createQuery = DAO.createQuery(Cuenta.class,new Criterion[]{Restrictions.like("idCuenta", 3)});
-        SessionController sessionController = ContextManager.getSessionController(ContextManager.actualContext);
-        sessionController.addVariable("data",new Variable("data", createQuery, List.class),true);
-        setRedirect(TablePage.class);
+        controller.addVariable("data",new Variable("data", createQuery, List.class),true);
+        ContextManager userContext = UserManager.addUserContext(Integer.parseInt(getContext().getSessionAttribute("user").toString()));
+        userContext.cleanMap();
+        userContext.addSessionController(controller);
+        setRedirect(TablePage.class);  
     }
 
 }

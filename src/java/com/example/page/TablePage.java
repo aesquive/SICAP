@@ -14,6 +14,7 @@ import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
 import org.apache.click.control.Table;
 import org.apache.click.extras.control.FormTable;
+import util.UserManager;
 
 /**
  * Clase que se encarga de poner detalles de cuentas pasados los datos deben de
@@ -38,9 +39,11 @@ public class TablePage extends BorderPage {
 
     @Override
     public void init() {
-        data = sessionController.getVariable("data") == null ? null : (List) sessionController.getVariable("data").getValue();
+        data = UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("data") == null ? null : 
+                (List) UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("data").getValue();
         form = new Form("form");
         table = new FormTable("table", form);
+        table.setName("dataTable");
         table.setPageNumber(0);
         table.setClass(Table.CLASS_ORANGE2);
         table.setWidth("900px");
@@ -107,8 +110,8 @@ public class TablePage extends BorderPage {
                     }
                 }
                 newContext();
-                setTitle("Detalle " + ref.getDescripcion());
-                sessionController.addVariable("data", new Variable("data", newData, List.class), true);
+                setTitle(ref.getDescripcion());
+                UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).addVariable("data", new Variable("data", newData, List.class), true);
                 setRedirect(TablePage.class);
                 return true;
             }

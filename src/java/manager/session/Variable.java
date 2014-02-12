@@ -62,7 +62,13 @@ public class Variable implements Cloneable{
         this.valueClass = valueClass;
     }
     
+   @Override
     public Object clone() throws CloneNotSupportedException{
         return super.clone();
     }
+    
+    public String toString(){
+        return value.toString();
+    }
 }
+

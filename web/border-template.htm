@@ -5,33 +5,45 @@
         #end
         <link rel="stylesheet" type="text/css" href="$context/css/style.css" title="Style"/>
     </head>
-    <body style="width: 100%">
+    <body>
         #if ($rootMenu)
         $rootMenu
         #end
-        
-        #if ($buttonsForm)
-        $buttonsForm
-        #end
-        
-        <br/>
-        <div>
-            #if ($title)
-            <span id="title">$title</span>
-            #end
-            #if ($userName)
-            <span id="userName">$userName</span>
-            #end
-        </div>
-        
-        #if ($message)
-        <a>$message</a>
+
+        #if ($forwardForm)
+        $forwardForm
         #end
 
+        #if ($backwardForm)
+        $backwardForm
+        #end
 
-        <div style="width: 100%" id="container">
-            #parse($path)
-        </div>
+    <center>
+        #if ($title)
+        <h3 id="title" style="font-size: 2em">$title</h3>
+        #end
+    </center>
 
-    </body>
+    #if ($login)
+    <div id="loginContainer">
+        #parse($path)
+    </div>
+    <a id="logoBanco">BANCOPPEL</a>
+    #else
+    <br/>
+    <div  id="container">
+        #parse($path)
+    </div>
+    <center>
+    <a id="logoBancoPage">BANCOPPEL</a>
+    </center>
+    #end
+
+
+    #if ($message)
+    <a>$message</a>
+    #end
+
+
+</body>
 </html> 

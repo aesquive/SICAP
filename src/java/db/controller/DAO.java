@@ -35,15 +35,14 @@ public class DAO {
             }
             beginTransaction.commit();
         }
-            
-            return createCriteria.list();
+        return createCriteria.list();
     }
 
     /**
      * verifica la sesion y la abre si es necesario
      */
     private static void checkSession() {
-        if (session == null) {
+        if (session == null || !session.isOpen()) {
             session = HibernateUtil.getSessionFactory().openSession();
         }
         session.reconnect();
