@@ -35,6 +35,7 @@ public class DAO {
             }
             beginTransaction.commit();
         }
+        beginTransaction=null;
         return createCriteria.list();
     }
 
