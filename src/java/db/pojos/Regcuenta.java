@@ -1,5 +1,5 @@
 package db.pojos;
-// Generated 20/02/2014 10:47:13 PM by Hibernate Tools 3.6.0
+// Generated 25/02/2014 09:45:45 PM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -11,35 +11,35 @@ import java.util.Set;
 public class Regcuenta  implements java.io.Serializable {
 
 
-     private Integer idregCuenta;
-     private String desCuenta;
+     private Integer idRegCuenta;
+     private String desRegCuenta;
      private Set cuentas = new HashSet(0);
 
     public Regcuenta() {
     }
 
 	
-    public Regcuenta(String desCuenta) {
-        this.desCuenta = desCuenta;
+    public Regcuenta(String desRegCuenta) {
+        this.desRegCuenta = desRegCuenta;
     }
-    public Regcuenta(String desCuenta, Set cuentas) {
-       this.desCuenta = desCuenta;
+    public Regcuenta(String desRegCuenta, Set cuentas) {
+       this.desRegCuenta = desRegCuenta;
        this.cuentas = cuentas;
     }
    
-    public Integer getIdregCuenta() {
-        return this.idregCuenta;
+    public Integer getIdRegCuenta() {
+        return this.idRegCuenta;
     }
     
-    public void setIdregCuenta(Integer idregCuenta) {
-        this.idregCuenta = idregCuenta;
+    public void setIdRegCuenta(Integer idRegCuenta) {
+        this.idRegCuenta = idRegCuenta;
     }
-    public String getDesCuenta() {
-        return this.desCuenta;
+    public String getDesRegCuenta() {
+        return this.desRegCuenta;
     }
     
-    public void setDesCuenta(String desCuenta) {
-        this.desCuenta = desCuenta;
+    public void setDesRegCuenta(String desRegCuenta) {
+        this.desRegCuenta = desRegCuenta;
     }
     public Set getCuentas() {
         return this.cuentas;

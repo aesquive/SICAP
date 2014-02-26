@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 20/02/2014 10:47:13 PM by Hibernate Tools 3.6.0 -->
+<!-- Generated 25/02/2014 09:45:47 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="db.pojos.Regcuenta" table="regcuenta" catalog="prueba">
-        <id name="idregCuenta" type="java.lang.Integer">
-            <column name="idregCuenta" />
+        <id name="idRegCuenta" type="java.lang.Integer">
+            <column name="idRegCuenta" />
             <generator class="identity" />
         </id>
-        <property name="desCuenta" type="string">
-            <column name="desCuenta" length="50" not-null="true" />
+        <property name="desRegCuenta" type="string">
+            <column name="desRegCuenta" not-null="true" />
         </property>
         <set name="cuentas" table="cuenta" inverse="true" lazy="true" fetch="select">
             <key>

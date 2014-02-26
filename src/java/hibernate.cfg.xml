@@ -7,7 +7,10 @@
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/prueba?autoReconnect=true</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
+  <property name="hibernate.connection.autocommit">true</property>
+  
     <property name="hibernate.c3p0.min_size">3</property>
+  
     <property name="hibernate.c3p0.max_size">20</property>
     <property name="hibernate.c3p0.timeout">250</property>
     <property name="hibernate.c3p0.max_statements">0</property>

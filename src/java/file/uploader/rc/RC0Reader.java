@@ -23,8 +23,7 @@ import org.hibernate.criterion.Restrictions;
  */
 public class RC0Reader {
 
-    public static String DELIMITER = ",";
-    public static String[] SAVING_ORDER = new String[]{"CatalogoCuenta", "", "Moneda", "Valor"};
+    public static String DELIMITER = ";";
     private String message;
     private Map<String, Catalogocuenta> cuentas;
     private Map<String, Moneda> monedas;
@@ -71,11 +70,12 @@ public class RC0Reader {
                 Catalogocuenta cat = cuentas.get(values[t][0]);
                 Moneda mon = monedas.get(values[t][2]);
                 Double value = Double.parseDouble(values[t][3]);
-                Regcuenta reg = (Regcuenta) DAO.createQuery(Regcuenta.class, new Criterion[]{Restrictions.like("idregCuenta", 1)}).get(0);
+                Regcuenta reg = (Regcuenta) DAO.createQuery(Regcuenta.class, new Criterion[]{Restrictions.like("idRegCuenta", 1)}).get(0);
                 Cuenta cuenta = new Cuenta(mon, reg, cat, value, "", 0);
                 DAO.save(cuenta);
                 complete++;
             } catch (Exception e) {
+                System.out.println(e);
                 message = message.equals("") ? "Error reg:" + values[t][0] : message + "," + values[t][0];
             }
         }
@@ -91,11 +91,11 @@ public class RC0Reader {
     }
 
     private Map<String, Moneda> createMapMon(List<Moneda> createQuery) {
-        Map<String, Moneda> cuentas = new HashMap<String, Moneda>();
+        Map<String, Moneda> mons = new HashMap<String, Moneda>();
         for (Moneda c : createQuery) {
-            cuentas.put(c.getIdMoneda().toString(), c);
+            mons.put(c.getIdMoneda().toString(), c);
         }
-        return cuentas;
+        return mons;
     }
     
     public static void main(String[] args) {

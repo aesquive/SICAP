@@ -1,5 +1,5 @@
 package db.pojos;
-// Generated 20/02/2014 10:47:13 PM by Hibernate Tools 3.6.0
+// Generated 25/02/2014 09:45:45 PM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class Catalogocuenta  implements java.io.Serializable {
 
 
-     private Integer idCatalogoCuenta;
+     private Long idCatalogoCuenta;
      private String desCatalogoCuenta;
      private Set cuentas = new HashSet(0);
 
@@ -27,11 +27,11 @@ public class Catalogocuenta  implements java.io.Serializable {
        this.cuentas = cuentas;
     }
    
-    public Integer getIdCatalogoCuenta() {
+    public Long getIdCatalogoCuenta() {
         return this.idCatalogoCuenta;
     }
     
-    public void setIdCatalogoCuenta(Integer idCatalogoCuenta) {
+    public void setIdCatalogoCuenta(Long idCatalogoCuenta) {
         this.idCatalogoCuenta = idCatalogoCuenta;
     }
     public String getDesCatalogoCuenta() {
