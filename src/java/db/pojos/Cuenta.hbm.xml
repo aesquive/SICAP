@@ -1,24 +1,34 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 4, 2014 11:00:16 PM by Hibernate Tools 3.6.0 -->
+<!-- Generated 20/02/2014 10:47:13 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="db.pojos.Cuenta" table="cuenta" catalog="prueba">
-        <id name="idCuenta" type="java.lang.Integer">
+        <id name="idCuenta" type="java.lang.Long">
             <column name="idCuenta" />
             <generator class="identity" />
         </id>
+        <many-to-one name="moneda" class="db.pojos.Moneda" fetch="select">
+            <column name="idMoneda" not-null="true" />
+        </many-to-one>
+        <many-to-one name="regcuenta" class="db.pojos.Regcuenta" fetch="select">
+            <column name="idRegCuenta" not-null="true" />
+        </many-to-one>
+        <many-to-one name="catalogocuenta" class="db.pojos.Catalogocuenta" fetch="select">
+            <column name="idCatalogoCuenta" not-null="true" />
+        </many-to-one>
         <property name="valor" type="java.lang.Double">
             <column name="valor" precision="22" scale="0" />
         </property>
         <property name="ref" type="string">
-            <column name="ref" length="80" />
-        </property>
-        <property name="descripcion" type="string">
-            <column name="descripcion" length="45" />
+            <column name="ref" length="80">
+                <comment>cuentas de referencia</comment>
+            </column>
         </property>
         <property name="status" type="java.lang.Integer">
-            <column name="status" />
+            <column name="status">
+                <comment>nos dice si la cuenta tiene status sucio o limpio</comment>
+            </column>
         </property>
     </class>
 </hibernate-mapping>

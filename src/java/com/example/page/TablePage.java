@@ -39,39 +39,37 @@ public class TablePage extends BorderPage {
 
     @Override
     public void init() {
-        data = UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("data") == null ? null : 
-                (List) UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("data").getValue();
+        data = UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("data") == null ? null
+                : (List) UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("data").getValue();
         form = new Form("form");
         table = new FormTable("table", form);
         table.setName("dataTable");
         table.setPageNumber(0);
         table.setClass(Table.CLASS_ORANGE2);
         table.setWidth("900px");
-        //ponemos las primeras columnas
-        Column cID=new Column("IdCuenta");
-        cID.setWidth("35%");
-        table.addColumn(cID);
-        Column dID=new Column("Descripcion");
-        dID.setWidth("40%");
-        table.addColumn(dID);
-
-        //ponemos los links de los montos para hacerlo recursivo
+//ponemos los links de los montos para hacerlo recursivo
         for (int t = 0; t < data.size(); t++) {
             ActionLink actionLink = new ActionLink("link" + data.get(t).getIdCuenta(), data.get(t).getValor().toString(), this, "onLinkClick");
             actionLink.setValue(data.get(t).getIdCuenta().toString());
             data.get(t).setActionLink(actionLink);
             addControl(actionLink);
         }
-        Column c = new Column("Valor");
-        c.setWidth("25%");
-        c.setDecorator(new Decorator() {
-            @Override
-            public String render(Object object, Context context) {
-                Cuenta c = (Cuenta) object;
-                return c.getActionLink().toString();
+//ponemos las primeras columnas
+        String[] columns = Cuenta.getColumns();
+        for (String c : columns) {
+            Column col = new Column(c);
+            col.setWidth(String.valueOf(100 / columns.length) + "%");
+            if (c.substring(c.length() - 1, c.length()).equals("*")) {
+                col.setDecorator(new Decorator() {
+                    @Override
+                    public String render(Object object, Context context) {
+                        Cuenta c = (Cuenta) object;
+                        return c.getActionLink().toString();
+                    }
+                });
             }
-        });
-        table.addColumn(c);
+            table.addColumn(col);
+        }
         //pegamos todo en nuestro fieldset
         FieldSet fs = new FieldSet("Datos");
         form.add(fs);
@@ -88,8 +86,9 @@ public class TablePage extends BorderPage {
     }
 
     /**
-     * evento que nos ayuda a checar si se da click en alguno de los valores 
-     * @return 
+     * evento que nos ayuda a checar si se da click en alguno de los valores
+     *
+     * @return
      */
     public boolean onLinkClick() {
         for (int t = 0; t < data.size(); t++) {
@@ -118,6 +117,5 @@ public class TablePage extends BorderPage {
         }
         return true;
     }
-
 
 }
