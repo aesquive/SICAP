@@ -20,7 +20,7 @@
 
     <center>
         #if ($title)
-        <h3 id="title" style="font-size: 2em">$title</h3>
+        <h3 id="title" style="width: 100%;font-size:1.3em">$title</h3>
         #end
     </center>
 
@@ -28,17 +28,17 @@
     <div id="loginContainer">
         #parse($path)
     </div>
-    <a id="logoBanco">BANCOPPEL</a>
     #else
     <br/>
-    <div  id="container">
+    <div style="width: max-content" id="container">
         #parse($path)
     </div>
-    <center>
-    <a id="logoBancoPage">BANCOPPEL</a>
-    </center>
     #end
 
+    
+    <center>
+         <img src="img/banco.png" id="logoBancoPage"/>
+    </center>
 
     #if ($message)
     <a>$message</a>

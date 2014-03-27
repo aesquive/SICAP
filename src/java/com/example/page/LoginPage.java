@@ -4,6 +4,7 @@ import db.controller.DAO;
 import db.pojos.Cuenta;
 import db.pojos.User;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import manager.session.SessionController;
@@ -106,12 +107,18 @@ public class LoginPage extends Page {
      * este METODO DEBE MODIFICARSE PARA ENVIAR AL MENU PRINCIPAL PRIMERO
      */
     private void redireccionar(SessionController controller) {
-        List<Cuenta> createQuery = DAO.createQuery(Cuenta.class,new Criterion[]{Restrictions.like("idCuenta", 3)});
-        controller.addVariable("data",new Variable("data", createQuery, List.class),true);
+        List<Cuenta> createQuery = DAO.createQuery(Cuenta.class,null);
+        List<Cuenta> data=new LinkedList<Cuenta>();
+        for(Cuenta c:createQuery){
+            if(c.getCatalogocuenta().getIdCatalogoCuenta()==1){
+                data.add(c);
+            }
+        }
+        controller.addVariable("data",new Variable("data", data, List.class),true);
         ContextManager userContext = UserManager.addUserContext(Integer.parseInt(getContext().getSessionAttribute("user").toString()));
         userContext.cleanMap();
         userContext.addSessionController(controller);
-        setRedirect(TablePage.class);  
+        setRedirect(IcapPage.class);  
     }
 
 }

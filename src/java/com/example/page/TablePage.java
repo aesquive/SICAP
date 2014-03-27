@@ -46,19 +46,32 @@ public class TablePage extends BorderPage {
         table.setName("dataTable");
         table.setPageNumber(0);
         table.setClass(Table.CLASS_ORANGE2);
-        table.setWidth("900px");
+
+        String subtit = data.size() > 1 ? data.get(0).getEjercicio().equals(data.get(1).getEjercicio()) ? data.get(0).getEjercicio() : "Datos" : data.get(0).getEjercicio();
 //ponemos los links de los montos para hacerlo recursivo
         for (int t = 0; t < data.size(); t++) {
-            ActionLink actionLink = new ActionLink("link" + data.get(t).getIdCuenta(), data.get(t).getValor().toString(), this, "onLinkClick");
+            ActionLink actionLink = new ActionLink("link" + data.get(t).getIdCuenta(), data.get(t).getResultado(), this, "onLinkClick");
             actionLink.setValue(data.get(t).getIdCuenta().toString());
             data.get(t).setActionLink(actionLink);
             addControl(actionLink);
         }
 //ponemos las primeras columnas
-        String[] columns = Cuenta.getColumns();
+        String[] columnsTmp = Cuenta.getColumns();
+        String[] columns=null;
+        if (subtit.equals("Datos")) {
+            columns = columnsTmp;
+        } else {
+            String[] subArray = new String[columnsTmp.length - 1];
+            for (int t = 0; t < subArray.length; t++) {
+                subArray[t] = columnsTmp[t + 1];
+            }
+            columns = subArray;
+        }
+
         for (String c : columns) {
             Column col = new Column(c);
-            col.setWidth(String.valueOf(100 / columns.length) + "%");
+            col.setWidth("900 px");
+            //col.setWidth(String.valueOf(100 / columns.length) + "%");
             if (c.substring(c.length() - 1, c.length()).equals("*")) {
                 col.setDecorator(new Decorator() {
                     @Override
@@ -67,11 +80,13 @@ public class TablePage extends BorderPage {
                         return c.getActionLink().toString();
                     }
                 });
+
             }
-            table.addColumn(col);
+            
+                table.addColumn(col);
         }
         //pegamos todo en nuestro fieldset
-        FieldSet fs = new FieldSet("Datos");
+        FieldSet fs = new FieldSet(subtit);
         form.add(fs);
         fs.add(table);
         //System.out.println("la cantidad de links " + links.length);

@@ -48,6 +48,11 @@ public abstract class BorderPage extends Page {
     public void setTitle(String title) {
         UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).addVariable("title", new Variable("title", title, String.class), true);
     }
+    
+    public String getTitle(){
+        return UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("title").toString();
+        
+    }
 
     /**
      * agrega el Menu de inicio y los botones de atras y adelante
