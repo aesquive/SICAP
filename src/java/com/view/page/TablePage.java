@@ -1,11 +1,17 @@
-package com.example.page;
+package com.view.page;
 
 import db.controller.DAO;
 import db.pojos.Cuenta;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import manager.session.Variable;
+import net.sf.click.extras.graph.JSLineChart;
 import org.apache.click.Context;
 import org.apache.click.control.ActionLink;
 import org.apache.click.control.Column;
@@ -28,6 +34,7 @@ public class TablePage extends BorderPage {
     Form form;
     @Resource(name = "data")
     List<Cuenta> data;
+    JSLineChart chart = new JSLineChart("chart");
 
     /**
      * constructor
@@ -57,7 +64,7 @@ public class TablePage extends BorderPage {
         }
 //ponemos las primeras columnas
         String[] columnsTmp = Cuenta.getColumns();
-        String[] columns=null;
+        String[] columns = null;
         if (subtit.equals("Datos")) {
             columns = columnsTmp;
         } else {
@@ -68,11 +75,16 @@ public class TablePage extends BorderPage {
             columns = subArray;
         }
 
+        if (subtit.equals("Datos")) {
+            makeGraph();
+        }
+
         for (String c : columns) {
             Column col = new Column(c);
             col.setWidth("900 px");
             //col.setWidth(String.valueOf(100 / columns.length) + "%");
             if (c.substring(c.length() - 1, c.length()).equals("*")) {
+                col.setName(c.substring(0, c.length() - 1));
                 col.setDecorator(new Decorator() {
                     @Override
                     public String render(Object object, Context context) {
@@ -82,8 +94,8 @@ public class TablePage extends BorderPage {
                 });
 
             }
-            
-                table.addColumn(col);
+
+            table.addColumn(col);
         }
         //pegamos todo en nuestro fieldset
         FieldSet fs = new FieldSet(subtit);
@@ -131,6 +143,26 @@ public class TablePage extends BorderPage {
             }
         }
         return true;
+    }
+
+    private void makeGraph() {
+        chart = new JSLineChart("chart");
+        chart.setChartHeight(350);
+        chart.setChartWidth(350);
+        Map<Date, Cuenta> cuentas = new HashMap<Date, Cuenta>();
+        List<Date> dates = new LinkedList<Date>();
+        for (Cuenta c : data) {
+            Date fecha = c.getRegcuenta().getFecha();
+            cuentas.put(fecha, c);
+            dates.add(fecha);
+        }
+        Collections.sort(dates);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
+        //for (Date d : dates) {
+        chart.addPoint("1", 2);
+
+//     chart.addPoint("1", cuentas.get(d).getValor().intValue());
+        //}
     }
 
 }

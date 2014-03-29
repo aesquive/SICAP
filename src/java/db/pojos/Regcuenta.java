@@ -1,7 +1,8 @@
 package db.pojos;
-// Generated 25/02/2014 09:45:45 PM by Hibernate Tools 3.6.0
+// Generated 29/03/2014 08:56:02 AM by Hibernate Tools 3.6.0
 
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ public class Regcuenta  implements java.io.Serializable {
 
      private Integer idRegCuenta;
      private String desRegCuenta;
+     private Date fecha;
      private Set cuentas = new HashSet(0);
 
     public Regcuenta() {
@@ -22,8 +24,9 @@ public class Regcuenta  implements java.io.Serializable {
     public Regcuenta(String desRegCuenta) {
         this.desRegCuenta = desRegCuenta;
     }
-    public Regcuenta(String desRegCuenta, Set cuentas) {
+    public Regcuenta(String desRegCuenta, Date fecha, Set cuentas) {
        this.desRegCuenta = desRegCuenta;
+       this.fecha = fecha;
        this.cuentas = cuentas;
     }
    
@@ -40,6 +43,13 @@ public class Regcuenta  implements java.io.Serializable {
     
     public void setDesRegCuenta(String desRegCuenta) {
         this.desRegCuenta = desRegCuenta;
+    }
+    public Date getFecha() {
+        return this.fecha;
+    }
+    
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
     public Set getCuentas() {
         return this.cuentas;

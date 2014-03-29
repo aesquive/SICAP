@@ -1,22 +1,38 @@
 package interpreter;
 
+import java.util.Map;
+
 /**
  *
  * @author Admin
  */
 public class Symbol {
 
-    public static String interp(String sym , String param1 , String param2){
+    public static String interp(String sym , String param1 , String param2 , Map<String,Double> variableMap) throws MathInterpreterException{
         Double value1=0.0;
         Double value2=0.0;
-        System.out.println(sym);
-        System.out.println(param1);
-        System.out.println(param2);
         if(String.valueOf(param1.charAt(0)).equals("(")){
-            value1=Double.parseDouble(MathInterpreter.interp(param1));
+            value1=Double.parseDouble(MathInterpreter.interp(param1,variableMap));
         }
         if(String.valueOf(param2.charAt(0)).equals("(")){
-            value2=Double.parseDouble(MathInterpreter.interp(param2));
+            value2=Double.parseDouble(MathInterpreter.interp(param2,variableMap));
+        }
+        if(String.valueOf(param1.charAt(0)).equals("=")){
+           
+            Double value = variableMap.get(param1.replace("=", ""));
+            if(value==null){
+                throw new MathInterpreterException("Not existing variable "+param1.replace("=", ""));
+            }
+            System.out.println(param1+value);
+            value1=value;
+        }
+        if(String.valueOf(param2.charAt(0)).equals("=")){
+            Double value = variableMap.get(param2.replace("=", ""));
+            if(value==null){
+                throw new MathInterpreterException("Not existing variable "+param2.replace("=", ""));
+            }
+            System.out.println(param2+value);
+            value2=value;
         }
         if(String.valueOf(param1.charAt(0)).equals("\"")){
             value1=Double.parseDouble(param1.replaceAll("\"", ""));

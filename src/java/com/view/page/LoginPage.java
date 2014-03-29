@@ -1,4 +1,4 @@
-package com.example.page;
+package com.view.page;
 
 import db.controller.DAO;
 import db.pojos.Cuenta;

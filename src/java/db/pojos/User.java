@@ -1,5 +1,5 @@
 package db.pojos;
-// Generated 25/02/2014 09:45:45 PM by Hibernate Tools 3.6.0
+// Generated 29/03/2014 08:56:02 AM by Hibernate Tools 3.6.0
 
 
 
@@ -10,6 +10,7 @@ public class User  implements java.io.Serializable {
 
 
      private Integer iduser;
+     private Tipousuario tipousuario;
      private String user;
      private String password;
 
@@ -20,7 +21,8 @@ public class User  implements java.io.Serializable {
     public User(String user) {
         this.user = user;
     }
-    public User(String user, String password) {
+    public User(Tipousuario tipousuario, String user, String password) {
+       this.tipousuario = tipousuario;
        this.user = user;
        this.password = password;
     }
@@ -31,6 +33,13 @@ public class User  implements java.io.Serializable {
     
     public void setIduser(Integer iduser) {
         this.iduser = iduser;
+    }
+    public Tipousuario getTipousuario() {
+        return this.tipousuario;
+    }
+    
+    public void setTipousuario(Tipousuario tipousuario) {
+        this.tipousuario = tipousuario;
     }
     public String getUser() {
         return this.user;

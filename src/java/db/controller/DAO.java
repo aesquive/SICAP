@@ -54,4 +54,10 @@ public class DAO {
         session.flush();
         session.update(object);
     }
+
+    public static void saveOrUpdate(Object obj) {
+        session.saveOrUpdate(obj);
+        session.flush();
+        session.update(obj);
+    }
 }

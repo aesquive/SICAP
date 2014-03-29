@@ -1,4 +1,4 @@
-package com.example.page;
+package com.view.page;
 
 import db.pojos.User;
 import manager.session.SessionController;
