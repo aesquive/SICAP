@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  *Es un interprete de operaciones basicas de 2 factores unicamente , es recursivo y sobre cada argumento
  * Soporta
- * + , - ,*,/,^ 
+ * + , - ,*,/,^,m (minimo),M (maximo)
  * en caso de querer poner un numero constante va entre ""
  * Ambos argumentos deben ir entre parentesis 
  * 
@@ -77,5 +77,8 @@ public class MathInterpreter {
         String operacionVars="((=tasa)*(=dCupon))/(=dAno)";
         System.out.println(operacionVars);
         System.out.println(MathInterpreter.interp(operacionVars, vars));
+    
+        String opM="(=dAno)m(=dCupon)";
+        System.out.println(MathInterpreter.interp(opM, vars));
     }
 }
