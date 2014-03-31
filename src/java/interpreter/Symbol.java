@@ -23,7 +23,6 @@ public class Symbol {
             if (value == null) {
                 throw new MathInterpreterException("Not existing variable " + param1.replace("=", ""));
             }
-            System.out.println(param1 + value);
             value1 = value;
         }
         if (String.valueOf(param2.charAt(0)).equals("=")) {
@@ -31,7 +30,6 @@ public class Symbol {
             if (value == null) {
                 throw new MathInterpreterException("Not existing variable " + param2.replace("=", ""));
             }
-            System.out.println(param2 + value);
             value2 = value;
         }
         if (String.valueOf(param1.charAt(0)).equals("\"")) {

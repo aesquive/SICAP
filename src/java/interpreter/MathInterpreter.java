@@ -27,8 +27,7 @@ public class MathInterpreter {
      * @throws MathInterpreterException 
      */
     public static String interp(String expr,Map<String,Double> variableMap) throws MathInterpreterException{
-        System.out.println("ey"+expr);
-        String[] data=getDataExpr(expr);
+          String[] data=getDataExpr(expr);
         return Symbol.interp(data[0],data[1], data[2],variableMap);
     }
 

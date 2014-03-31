@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 29/03/2014 08:56:04 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 30/03/2014 11:04:48 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="db.pojos.Cuenta" table="cuenta" catalog="prueba">
         <id name="idCuenta" type="java.lang.Long">
@@ -9,7 +9,7 @@
             <generator class="identity" />
         </id>
         <many-to-one name="moneda" class="db.pojos.Moneda" fetch="select">
-            <column name="idMoneda" not-null="false" />
+            <column name="idMoneda" />
         </many-to-one>
         <many-to-one name="regcuenta" class="db.pojos.Regcuenta" fetch="select">
             <column name="idRegCuenta" not-null="true" />
@@ -21,7 +21,7 @@
             <column name="valor" precision="22" scale="0" />
         </property>
         <property name="ref" type="string">
-            <column name="ref" length="80">
+            <column name="ref" length="300">
                 <comment>cuentas de referencia</comment>
             </column>
         </property>

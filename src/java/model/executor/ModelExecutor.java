@@ -9,7 +9,6 @@ import interpreter.MathInterpreterException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.hibernate.criterion.Criterion;
 
 /**
  * Ejecuta todas las operaciones contenidas dentro de la base de datos de la
@@ -141,7 +140,7 @@ public class ModelExecutor {
         Map<String, Cuenta> cuentas = new HashMap<String, Cuenta>();
         List<Cuenta> createQuery = DAO.createQuery(Cuenta.class,null);
         for(Cuenta c:createQuery){
-            if(c.getRegcuenta().getIdRegCuenta()==1){
+            if(c.getRegcuenta().getIdRegCuenta()==1 && c.getMoneda().getIdMoneda()==14){
                 cuentas.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
             }
         }

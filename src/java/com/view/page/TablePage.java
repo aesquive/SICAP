@@ -53,7 +53,6 @@ public class TablePage extends BorderPage {
         table.setName("dataTable");
         table.setPageNumber(0);
         table.setClass(Table.CLASS_ORANGE2);
-
         String subtit = data.size() > 1 ? data.get(0).getEjercicio().equals(data.get(1).getEjercicio()) ? data.get(0).getEjercicio() : "Datos" : data.get(0).getEjercicio();
 //ponemos los links de los montos para hacerlo recursivo
         for (int t = 0; t < data.size(); t++) {

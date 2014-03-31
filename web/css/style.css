@@ -196,3 +196,11 @@ label{
     color:white;
 }
 
+#selectwhatif{
+    width: 15em;
+    color: black;
+    font-weight: bold;
+    font-size: 1.3em;
+    background-color: #FF7519;
+}
+    

@@ -2,6 +2,7 @@ package db.controller;
 
 import db.pojos.Cuenta;
 import java.util.List;
+import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -35,7 +36,9 @@ public class DAO {
                 createCriteria.add(cr);
             }
         }
-        return createCriteria.list();
+        List list = createCriteria.list();
+        
+        return list;
     }
 
     /**
@@ -44,20 +47,20 @@ public class DAO {
     private static void checkSession() {
         if (session == null || !session.isOpen()) {
             session = HibernateUtil.getSessionFactory().openSession();
-        }   
+        }
         session.reconnect();
+        session.setCacheMode(CacheMode.IGNORE);
     }
 
-    
     public static void save(Object object) {
         session.save(object);
         session.flush();
-        session.update(object);
+        session.clear();
     }
 
     public static void saveOrUpdate(Object obj) {
         session.saveOrUpdate(obj);
         session.flush();
-        session.update(obj);
+        session.clear();
     }
 }

@@ -3,10 +3,8 @@ package com.view.page;
 import db.controller.DAO;
 import db.pojos.Cuenta;
 import db.pojos.User;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import manager.session.SessionController;
 import manager.session.Variable;
 import org.apache.click.Page;
@@ -53,7 +51,7 @@ public class LoginPage extends Page {
         //le damos el setup al form
         loginForm.add(userField);
         loginForm.add(passwordField);
-        loginForm.add(new Submit("okSubmit", " OK ", this, "okClicked"));
+        loginForm.add(new Submit("okSubmit", " Accesar ", this, "okClicked"));
     }
 
     /**
