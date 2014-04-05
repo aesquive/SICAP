@@ -6,9 +6,10 @@ import db.pojos.Regcuenta;
 import db.pojos.Regcuentauser;
 import db.pojos.User;
 import java.util.Calendar;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,8 +29,11 @@ import util.UserManager;
  */
 public class WhatifPage extends BorderPage {
 
+    Form formView;
+
     Form form;
     Select selectProject;
+    Select selectView;
     TextField nameSimulation;
     boolean onceClicked;
     User user;
@@ -41,8 +45,10 @@ public class WhatifPage extends BorderPage {
     @Override
     public void init() {
         form = new Form("form");
+        formView = new Form("formView");
         onceClicked = true;
         selectProject = new Select("Ejercicio");
+        selectView = new Select("Ejercicio");
         nameSimulation = new TextField("Nombre de la Simulación");
         selectProject.setId("selectwhatif");
         nameSimulation.setRequired(true);
@@ -52,11 +58,15 @@ public class WhatifPage extends BorderPage {
         for (Regcuentauser ru : createQuery) {
             if (ru.getUser().getIduser() == user.getIduser()) {
                 selectProject.add(new Option(ru.getRegcuenta(), ru.getRegcuenta().getDesRegCuenta()));
+                selectView.add(new Option(ru.getRegcuenta(), ru.getRegcuenta().getDesRegCuenta()));
             }
         }
         form.add(selectProject);
         form.add(nameSimulation);
-        form.add(new Submit("okWhatIf", "Comenzar", this, "okWhatIfClicked"));
+        form.add(new Submit("okWhatIf", "Crear Simulación", this, "okWhatIfClicked"));
+        formView.add(selectView);
+        formView.add(new Submit("okEditWhatIf", "Editar Simulación", this, "okViewClicked"));
+        addControl(formView);
         addControl(form);
     }
 
@@ -72,6 +82,22 @@ public class WhatifPage extends BorderPage {
         if (onceClicked) {
             copiarProyecto();
         }
+        return true;
+    }
+
+    public boolean okViewClicked() {
+        Regcuenta regCta = null;
+        List<Regcuenta> createQuery = DAO.createQuery(Regcuenta.class, null);
+        for (Regcuenta rc : createQuery) {
+            if (Integer.parseInt(selectView.getValue()) == rc.getIdRegCuenta()) {
+                try {
+                    regCta = (Regcuenta) rc.clone();
+                } catch (CloneNotSupportedException ex) {
+                    Logger.getLogger(WhatifPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        cambiarPantalla(regCta);
         return true;
     }
 
@@ -102,15 +128,38 @@ public class WhatifPage extends BorderPage {
             }
         }
         Set<Cuenta> cuentas = regCta.getCuentas();
+        Map<String, Cuenta> viejasCatalogoCuenta = new HashMap<String, Cuenta>();
+        Map<String, Cuenta> viejasIDCuenta = new HashMap<String, Cuenta>();
+        Map<String, Cuenta> nuevasCatalogoCuenta = new HashMap<String, Cuenta>();
         for (Cuenta cta : cuentas) {
             Cuenta c = (Cuenta) cta.clone();
             Cuenta nueva = new Cuenta();
             nueva.setMoneda(c.getMoneda());
             nueva.setCatalogocuenta(c.getCatalogocuenta());
-            nueva.setRef(c.getRef());
             nueva.setRegcuenta(regCuenta);
             nueva.setValor(c.getValor());
             DAO.save(nueva);
+            viejasCatalogoCuenta.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
+            viejasIDCuenta.put(c.getIdCuenta().toString(), c);
+            nuevasCatalogoCuenta.put(nueva.getCatalogocuenta().getIdCatalogoCuenta().toString(), nueva);
+        }
+        for (String s : nuevasCatalogoCuenta.keySet()) {
+            Cuenta nueva = nuevasCatalogoCuenta.get(s);
+            Cuenta vieja = viejasCatalogoCuenta.get(s);
+            String ref = vieja.getRef();
+            String newRef = "";
+            if (ref != null) {
+                String[] split = ref.split(",");
+                for (String sp : split) {
+                    if (!sp.equals("")) {
+                        Cuenta ctaRef = viejasIDCuenta.get(sp);
+                        Cuenta ctaNuevaRef = nuevasCatalogoCuenta.get(ctaRef.getCatalogocuenta().getIdCatalogoCuenta().toString());
+                        newRef = newRef + ctaNuevaRef.getIdCuenta().toString() + ",";
+                    }
+                }
+                nueva.setRef(newRef);
+                DAO.update(nueva);
+            }
         }
     }
 
@@ -131,5 +180,6 @@ public class WhatifPage extends BorderPage {
         userContext.addSessionController(controller);
         setRedirect(SimulacionPage.class);
     }
+
 
 }

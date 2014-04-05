@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 5/04/2014 12:20:46 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="db.pojos.Tipotasa" table="tipotasa" catalog="prueba">
+        <id name="idTipoTasa" type="java.lang.Integer">
+            <column name="IdTipoTasa" />
+            <generator class="identity" />
+        </id>
+        <property name="desTipoTasa" type="string">
+            <column name="DesTipoTasa" />
+        </property>
+        <property name="categoria" type="java.lang.Integer">
+            <column name="Categoria" />
+        </property>
+        <set name="vectors" table="vector" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdTipoTasa" />
+            </key>
+            <one-to-many class="db.pojos.Vector" />
+        </set>
+    </class>
+</hibernate-mapping>

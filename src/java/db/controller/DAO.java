@@ -6,6 +6,7 @@ import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.TransientObjectException;
 import org.hibernate.criterion.Criterion;
 
 /**
@@ -37,7 +38,7 @@ public class DAO {
             }
         }
         List list = createCriteria.list();
-        
+
         return list;
     }
 
@@ -60,6 +61,12 @@ public class DAO {
 
     public static void saveOrUpdate(Object obj) {
         session.saveOrUpdate(obj);
+        session.flush();
+        session.clear();
+    }
+
+    public static void update(Object obj) {
+        session.update(obj);
         session.flush();
         session.clear();
     }

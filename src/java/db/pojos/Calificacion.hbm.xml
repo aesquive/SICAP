@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 5/04/2014 12:20:46 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="db.pojos.Calificacion" table="calificacion" catalog="prueba">
+        <id name="idCalificacion" type="java.lang.Integer">
+            <column name="IdCalificacion" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="calificadora" class="db.pojos.Calificadora" fetch="select">
+            <column name="IdCalificadora" />
+        </many-to-one>
+        <property name="calificacion" type="string">
+            <column name="Calificacion" />
+        </property>
+        <set name="vectorsForIdCalificacionHr" table="vector" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdCalificacionHR" />
+            </key>
+            <one-to-many class="db.pojos.Vector" />
+        </set>
+        <set name="vectorsForIdCalificacionFitch" table="vector" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdCalificacionFitch" />
+            </key>
+            <one-to-many class="db.pojos.Vector" />
+        </set>
+        <set name="vectorsForIdCalificacionSp" table="vector" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdCalificacionSP" />
+            </key>
+            <one-to-many class="db.pojos.Vector" />
+        </set>
+        <set name="vectorsForIdCalificacionMoody" table="vector" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdCalificacionMoody" />
+            </key>
+            <one-to-many class="db.pojos.Vector" />
+        </set>
+    </class>
+</hibernate-mapping>

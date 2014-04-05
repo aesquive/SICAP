@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 5/04/2014 12:20:46 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="db.pojos.Tipoinstrumento" table="tipoinstrumento" catalog="prueba">
+        <id name="idTipoInstrumento" type="java.lang.Integer">
+            <column name="IdTipoInstrumento" />
+            <generator class="identity" />
+        </id>
+        <property name="valTipoInstrumento" type="string">
+            <column name="ValTipoInstrumento" />
+        </property>
+        <property name="desTipoInstrumento" type="string">
+            <column name="DesTipoInstrumento" />
+        </property>
+    </class>
+</hibernate-mapping>

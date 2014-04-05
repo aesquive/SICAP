@@ -1,44 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.view.page;
 
 import db.controller.DAO;
 import db.pojos.Cuenta;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
+import db.pojos.Regcuenta;
+import interpreter.MathInterpreterException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
+import manager.session.SessionController;
 import manager.session.Variable;
-import net.sf.click.extras.graph.JSLineChart;
+import model.executor.ModelExecutor;
 import org.apache.click.Context;
 import org.apache.click.control.ActionLink;
 import org.apache.click.control.Column;
 import org.apache.click.control.Decorator;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
+import org.apache.click.control.Submit;
 import org.apache.click.control.Table;
 import org.apache.click.extras.control.FormTable;
+import util.ContextManager;
 import util.UserManager;
 
 /**
  *
  * @author Admin
  */
-public class SimulacionPage extends BorderPage{
-    
+public class SimulacionPage extends BorderPage {
+
     FormTable table;
     Form form;
     @Resource(name = "data")
     List<Cuenta> data;
-    JSLineChart chart = new JSLineChart("chart");
 
     /**
      * constructor
@@ -52,6 +49,8 @@ public class SimulacionPage extends BorderPage{
     public void init() {
         data = UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("data") == null ? null
                 : (List) UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).getVariable("data").getValue();
+
+        UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).addVariable("page", new Variable("page", this.getClass(), Class.class), true);
         form = new Form("form");
         table = new FormTable("table", form);
         table.setName("dataTable");
@@ -65,8 +64,15 @@ public class SimulacionPage extends BorderPage{
             data.get(t).setActionLink(actionLink);
             addControl(actionLink);
         }
+//ponemos los links de Editar
+        for (int t = 0; t < data.size(); t++) {
+            ActionLink actionLink = new ActionLink("editlink" + data.get(t).getIdCuenta(), data.get(t).getEditStatus(), this, "onEditClick");
+            actionLink.setValue(data.get(t).getIdCuenta().toString());
+            data.get(t).setEditLink(actionLink);
+            addControl(actionLink);
+        }
 //ponemos las primeras columnas
-        String[] columnsTmp = Cuenta.getColumns();
+        String[] columnsTmp = Cuenta.getSimulationColumns();
         String[] columns = null;
         if (subtit.equals("Datos")) {
             columns = columnsTmp;
@@ -76,10 +82,6 @@ public class SimulacionPage extends BorderPage{
                 subArray[t] = columnsTmp[t + 1];
             }
             columns = subArray;
-        }
-
-        if (subtit.equals("Datos")) {
-            makeGraph();
         }
 
         for (String c : columns) {
@@ -97,9 +99,21 @@ public class SimulacionPage extends BorderPage{
                 });
 
             }
+            if (c.substring(c.length() - 1, c.length()).equals("?")) {
+                col.setWidth("150px");
+                col.setName(c.substring(0, c.length() - 1));
+                col.setDecorator(new Decorator() {
+                    @Override
+                    public String render(Object object, Context context) {
+                        Cuenta c = (Cuenta) object;
+                        return c.getEditLink().toString();
+                    }
+                });
 
+            }
             table.addColumn(col);
         }
+        form.add(new Submit("startSimulation", "Simular", this, "simularClicked"));
         //pegamos todo en nuestro fieldset
         FieldSet fs = new FieldSet(subtit);
         form.add(fs);
@@ -113,6 +127,26 @@ public class SimulacionPage extends BorderPage{
      */
     private void fillData() {
         table.setRowList(data);
+    }
+
+    public boolean simularClicked() {
+        try {
+            Integer idRegCuenta = data.get(0).getRegcuenta().getIdRegCuenta();
+            List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
+            Map<String, Cuenta> mapData = new HashMap<String, Cuenta>();
+            for (Cuenta c : createQuery) {
+                if (c.getRegcuenta().getIdRegCuenta() == idRegCuenta && (c.getRef() == null || c.getRef().equals(""))) {
+                    mapData.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
+                }
+            }
+            ModelExecutor modelExecutor = new ModelExecutor(mapData, true);
+            modelExecutor.start();
+            cambiarPantalla(data.get(0).getRegcuenta());
+            return true;
+        } catch (MathInterpreterException ex) {
+            Logger.getLogger(SimulacionPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     /**
@@ -141,31 +175,46 @@ public class SimulacionPage extends BorderPage{
                 newContext();
                 setTitle(ref.getDescripcion());
                 UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).addVariable("data", new Variable("data", newData, List.class), true);
-                setRedirect(TablePage.class);
+                UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).addVariable("page", new Variable("page", this.getClass(), List.class), true);
+                setRedirect(SimulacionPage.class);
                 return true;
             }
         }
         return true;
     }
 
-    private void makeGraph() {
-        chart = new JSLineChart("chart");
-        chart.setChartHeight(350);
-        chart.setChartWidth(350);
-        Map<Date, Cuenta> cuentas = new HashMap<Date, Cuenta>();
-        List<Date> dates = new LinkedList<Date>();
-        for (Cuenta c : data) {
-            Date fecha = c.getRegcuenta().getFecha();
-            cuentas.put(fecha, c);
-            dates.add(fecha);
+    /**
+     * evento que nos ayuda a checar si se da click en alguno de los valores
+     *
+     * @return
+     */
+    public boolean onEditClick() {
+        for (int t = 0; t < data.size(); t++) {
+            if (data.get(t).getEditLink().isClicked()) {
+                newContext();
+                UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext).addVariable("ctaEdit", new Variable("ctaEdit", data.get(t), List.class), true);
+                setRedirect(EditsimulationPage.class);
+                return true;
+            }
         }
-        Collections.sort(dates);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
-        //for (Date d : dates) {
-        chart.addPoint("1", 2);
-
-//     chart.addPoint("1", cuentas.get(d).getValor().intValue());
-        //}
+        return true;
     }
 
+    private void cambiarPantalla(Regcuenta regCuenta) {
+        SessionController controller = UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext);
+        List<Cuenta> data = new LinkedList<Cuenta>();
+        List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
+        for (Cuenta c : createQuery) {
+            if (c.getCatalogocuenta().getIdCatalogoCuenta() == 1 && c.getRegcuenta().getIdRegCuenta() == regCuenta.getIdRegCuenta()) {
+                data.add(c);
+                break;
+            }
+        }
+        controller.addVariable("data", new Variable("data", data, List.class), true);
+        setTitle("");
+        ContextManager userContext = UserManager.addUserContext(Integer.parseInt(getContext().getSessionAttribute("user").toString()));
+        userContext.cleanMap();
+        userContext.addSessionController(controller);
+        setRedirect(SimulacionPage.class);
+    }
 }

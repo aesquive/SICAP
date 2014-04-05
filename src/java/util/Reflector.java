@@ -55,11 +55,8 @@ public class Reflector {
         try {
             return findMethod.invoke(target, args);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(Reflector.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(Reflector.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvocationTargetException ex) {
-            Logger.getLogger(Reflector.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;   
         

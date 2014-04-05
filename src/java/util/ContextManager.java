@@ -14,13 +14,13 @@ public class ContextManager {
     /**
      * el mapeo que tendra todos los contextos guardados
      */
-    public  Map<Integer, SessionController> variableMap;
+    public Map<Integer, SessionController> variableMap;
     /**
      * el contexto actual
      */
-    public  int actualContext = 0;
+    public int actualContext = 0;
 
-    public  void cleanMap() {
+    public void cleanMap() {
         if (variableMap == null) {
             variableMap = new HashMap<Integer, SessionController>();
         }
@@ -28,7 +28,7 @@ public class ContextManager {
         actualContext = 0;
     }
 
-    public  void addSessionController(SessionController sessionController) {
+    public void addSessionController(SessionController sessionController) {
         if (variableMap == null) {
             variableMap = new HashMap<Integer, SessionController>();
         }
@@ -36,8 +36,16 @@ public class ContextManager {
         variableMap.put(actualContext, sessionController);
     }
 
-    public  SessionController getSessionController(int context) {
+    public SessionController getSessionController(int context) {
         return variableMap.get(context);
     }
-    
+
+    public void removeLastSession() {
+        if (variableMap == null) {
+            variableMap = new HashMap<Integer, SessionController>();
+        }
+        variableMap.remove(actualContext);
+        actualContext--;
+    }
+
 }

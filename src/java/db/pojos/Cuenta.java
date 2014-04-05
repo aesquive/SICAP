@@ -20,7 +20,8 @@ public class Cuenta implements java.io.Serializable,Cloneable {
     private Integer status;
     
     private ActionLink actionLink;
-
+    private ActionLink editLink;
+    
     public Cuenta() {
     }
 
@@ -98,6 +99,11 @@ public class Cuenta implements java.io.Serializable,Cloneable {
     public static String[] getColumns() {
         return new String[]{"Ejercicio", "Descripcion", "Resultado*"};
     }
+    
+    
+    public static String[] getSimulationColumns() {
+        return new String[]{"Ejercicio", "Descripcion", "Resultado*","Acción?"};
+    }
 
     /**
      * @return the actionLink
@@ -113,6 +119,21 @@ public class Cuenta implements java.io.Serializable,Cloneable {
         this.actionLink = actionLink;
     }
 
+    public ActionLink getEditLink(){
+        return editLink;
+    }
+    
+    public void setEditLink(ActionLink editLink){
+        this.editLink=editLink;
+    }
+    
+    public String getEditStatus(){
+        if(ref==null || ref.equals("")){
+            return "Editar";
+        }
+        return "";
+    }
+    
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }

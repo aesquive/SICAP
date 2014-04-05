@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 5/04/2014 12:20:46 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="db.pojos.Vector" table="vector" catalog="prueba">
+        <id name="idVector" type="java.lang.Integer">
+            <column name="IdVector" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="calificacionByIdCalificacionHr" class="db.pojos.Calificacion" fetch="select">
+            <column name="IdCalificacionHR" />
+        </many-to-one>
+        <many-to-one name="tipotasa" class="db.pojos.Tipotasa" fetch="select">
+            <column name="IdTipoTasa" />
+        </many-to-one>
+        <many-to-one name="calificacionByIdCalificacionMoody" class="db.pojos.Calificacion" fetch="select">
+            <column name="IdCalificacionMoody" />
+        </many-to-one>
+        <many-to-one name="calificacionByIdCalificacionSp" class="db.pojos.Calificacion" fetch="select">
+            <column name="IdCalificacionSP" />
+        </many-to-one>
+        <many-to-one name="calificacionByIdCalificacionFitch" class="db.pojos.Calificacion" fetch="select">
+            <column name="IdCalificacionFitch" />
+        </many-to-one>
+        <property name="idTipoInstrumento" type="string">
+            <column name="IdTipoInstrumento" />
+        </property>
+        <property name="emisioraInstrumento" type="string">
+            <column name="EmisioraInstrumento" />
+        </property>
+        <property name="serieInstrumento" type="string">
+            <column name="SerieInstrumento" />
+        </property>
+        <property name="tasaInstrumento" type="java.lang.Double">
+            <column name="TasaInstrumento" precision="10" scale="5" />
+        </property>
+        <property name="precioSucio" type="java.lang.Double">
+            <column name="PrecioSucio" precision="15" scale="5" />
+        </property>
+        <property name="precioLimpio" type="java.lang.Double">
+            <column name="PrecioLimpio" precision="15" scale="5" />
+        </property>
+        <property name="duracion" type="java.lang.Integer">
+            <column name="Duracion" />
+        </property>
+        <property name="fecha" type="timestamp">
+            <column name="Fecha" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
