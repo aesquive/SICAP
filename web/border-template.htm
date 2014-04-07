@@ -18,6 +18,12 @@
         $backwardForm
         #end
 
+
+        #if ($message)
+        <a>$message</a>
+        #end
+
+
     <center>
         #if ($title)
         <h3 id="title" style="width: 100%;font-size:1.3em">$title</h3>
@@ -35,14 +41,10 @@
     </div>
     #end
 
-    
-    <center>
-         <img src="img/banco.png" id="logoBancoPage"/>
-    </center>
 
-    #if ($message)
-    <a>$message</a>
-    #end
+    <center>
+        <img src="img/banco.png" id="logoBancoPage"/>
+    </center>
 
 
 </body>

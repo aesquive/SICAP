@@ -5,12 +5,10 @@ import db.pojos.Vector;
 import java.util.List;
 import manager.session.SessionController;
 import manager.session.Variable;
-import org.apache.click.control.Column;
 import org.apache.click.control.Form;
 import org.apache.click.control.Option;
 import org.apache.click.control.Select;
 import org.apache.click.control.Submit;
-import org.apache.click.control.Table;
 import util.ContextManager;
 import util.UserManager;
 
@@ -53,6 +51,7 @@ public class MapeoPage extends BorderPage {
     }
 
     public boolean editInstrument() {
+        message="";
         SessionController controller = UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext);
         Vector chosen = null;
         for (Vector v : instruments) {
@@ -64,10 +63,8 @@ public class MapeoPage extends BorderPage {
             message = "Se debe elegir un Instrumento a Editar";
             return false;
         }
-        controller.addVariable("editInstrument", new Variable("editInstrument", chosen, Vector.class), true);
-        setTitle("");
+        controller.addVariable("selectedVectorVector", new Variable("editInstrument", chosen, Vector.class), true);
         ContextManager userContext = UserManager.addUserContext(Integer.parseInt(getContext().getSessionAttribute("user").toString()));
-        controller.addVariable("page", new Variable("page", this.getClass(), Class.class), true);
         userContext.cleanMap();
         userContext.addSessionController(controller);
         setRedirect(MapeoeditPage.class);

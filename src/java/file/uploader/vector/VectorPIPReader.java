@@ -39,17 +39,17 @@ public class VectorPIPReader extends VectorReader {
             for (int t = 0; t < cols.length; t++) {
                 String dataType = cols[t].substring(cols[t].length() - 1, cols[t].length());
                 Object obj = getValue(cols[t].substring(0, cols[t].length() - 1), dataType, row, dataCalif, dataTasa);
+                System.out.println(obj+" method = "+methods[t]);
                 if (obj != null) {
                     Reflector.callMethod(vector, new Object[]{obj}, methods[t]);
                 }
             }
-            DAO.save(vector);
         }
         return true;
     }
 
     public static void main(String[] args) throws IOException {
-        VectorPIPReader.saveVector(VectorPIPReader.getData(new File("ejemploPIP.csv")), 0);
+        VectorPIPReader.saveVector(VectorPIPReader.getData(new File("ejemplo.csv")), 0);
     }
 
 }

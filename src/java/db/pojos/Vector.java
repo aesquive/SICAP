@@ -22,7 +22,7 @@ public class Vector  implements java.io.Serializable {
      private Double tasaInstrumento;
      private Double precioSucio;
      private Double precioLimpio;
-     private Integer duracion;
+     private Double duracion;
      private Date fecha;
 
     public Vector() {
@@ -32,7 +32,7 @@ public class Vector  implements java.io.Serializable {
     public Vector(Date fecha) {
         this.fecha = fecha;
     }
-    public Vector(Calificacion calificacionByIdCalificacionHr, Tipotasa tipotasa, Calificacion calificacionByIdCalificacionMoody, Calificacion calificacionByIdCalificacionSp, Calificacion calificacionByIdCalificacionFitch, String idTipoInstrumento, String emisioraInstrumento, String serieInstrumento, Double tasaInstrumento, Double precioSucio, Double precioLimpio, Integer duracion, Date fecha) {
+    public Vector(Calificacion calificacionByIdCalificacionHr, Tipotasa tipotasa, Calificacion calificacionByIdCalificacionMoody, Calificacion calificacionByIdCalificacionSp, Calificacion calificacionByIdCalificacionFitch, String idTipoInstrumento, String emisioraInstrumento, String serieInstrumento, Double tasaInstrumento, Double precioSucio, Double precioLimpio, Double duracion, Date fecha) {
        this.calificacionByIdCalificacionHr = calificacionByIdCalificacionHr;
        this.tipotasa = tipotasa;
        this.calificacionByIdCalificacionMoody = calificacionByIdCalificacionMoody;
@@ -132,11 +132,11 @@ public class Vector  implements java.io.Serializable {
     public void setPrecioLimpio(Double precioLimpio) {
         this.precioLimpio = precioLimpio;
     }
-    public Integer getDuracion() {
+    public Double getDuracion() {
         return this.duracion;
     }
     
-    public void setDuracion(Integer duracion) {
+    public void setDuracion(Double duracion) {
         this.duracion = duracion;
     }
     public Date getFecha() {
@@ -148,7 +148,13 @@ public class Vector  implements java.io.Serializable {
     }
 
 
-
+    public static void main(String[] args) {
+        String cad="20131231;S;UDIBONO;401115;517.572561;518.247058;0.674497;4;0;SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO;GUBERNAMENTAL;3500000000;40377100000;24/12/2009;11284;15/11/2040;100;[UDI] Unidades de Inversion (MXN);NA;-;-;Cada 182 dia(s);4;12;Tasa Fija;62;54;520.641082;30/12/2013;NA;-;-;3.819202;3.84277;-;-;Aaa.mx;mxAAA;NA;-;1.01%;-1.44%;729.518175;501.897263;NA;1.67%;2.76%;15.7944604;-16.18080233;375.4423649;-11.180972;0.01%;100;AAA(mex);02/05/2013;04/12/2013;-0.139172486;5795.802523;3.862;-;5795.802523";
+         String[] split = cad.split(";");
+         for(int t=0;t<split.length;t++){
+             System.out.println(t+" "+split[t]);
+         }
+    }
 
 }
 

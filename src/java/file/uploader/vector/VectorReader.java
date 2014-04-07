@@ -30,13 +30,13 @@ public  class VectorReader {
     /**
      *
      */
-    public static String[] PIPCOLUMNS = new String[]{"1s", "2s", "3s", "58n", "21t", "5n", "4n", "36c", "37c", "53c", "59c", "47n", "0d"};
+    public static String[] PIPCOLUMNS = new String[]{"1s", "2s", "3s", "58n", "24t", "5n", "4n", "36c", "37c", "53c", "59c", "47n", "0d"};
 
     public static String[] PIPMETHODS = new String[]{"setIdTipoInstrumento", "SetEmisioraInstrumento", "setSerieInstrumento", "setTasaInstrumento",
         "setTipoTasa", "setPrecioSucio", "setPrecioLimpio", "setCalificacionByIdCalificacionMoody", "setCalificacionByIdCalificacionSP",
         "setCalificacionByIdCalificacionFitch", "setCalificacionByIdCalificacionHR", "setDuracion", "setFecha"};
 
-    private static final String SEPARATOR = ",";
+    private static final String SEPARATOR = ";";
     public static String[] VALMERCOLUMNS;
     public static String[] VALMERMETHODS;
 
@@ -67,7 +67,7 @@ public  class VectorReader {
             try{
                 return Double.parseDouble(value);
             }catch(NumberFormatException num){
-                return null;
+                System.out.println(num);
             }
         }
         if(dataType.equals("t")){

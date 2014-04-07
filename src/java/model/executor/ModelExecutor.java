@@ -155,11 +155,13 @@ public class ModelExecutor {
         Map<String, Cuenta> cuentas = new HashMap<String, Cuenta>();
         List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
         for (Cuenta c : createQuery) {
-            if (c.getRegcuenta().getIdRegCuenta() == 5 && (c.getMoneda() == null || c.getMoneda().getIdMoneda() == 14)) {
-                cuentas.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
+            if (c.getRegcuenta().getIdRegCuenta() == 1) {
+                if (c.getMoneda() != null && c.getMoneda().getIdMoneda()==14) {
+                    cuentas.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
+                }
             }
         }
-        ModelExecutor m = new ModelExecutor(cuentas, true);
+        ModelExecutor m = new ModelExecutor(cuentas, false);
         m.start();
         Cuenta get = cuentas.get("1");
     }

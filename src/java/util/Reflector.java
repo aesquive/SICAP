@@ -55,8 +55,11 @@ public class Reflector {
         try {
             return findMethod.invoke(target, args);
         } catch (IllegalAccessException ex) {
+            System.out.println(ex);
         } catch (IllegalArgumentException ex) {
+            System.out.println(ex);
         } catch (InvocationTargetException ex) {
+            System.out.println(ex);
         }
         return null;   
         

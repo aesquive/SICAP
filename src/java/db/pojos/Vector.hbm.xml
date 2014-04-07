@@ -41,8 +41,8 @@
         <property name="precioLimpio" type="java.lang.Double">
             <column name="PrecioLimpio" precision="15" scale="5" />
         </property>
-        <property name="duracion" type="java.lang.Integer">
-            <column name="Duracion" />
+        <property name="duracion" type="java.lang.Double">
+            <column name="Duracion" precision="15" scale="5" />
         </property>
         <property name="fecha" type="timestamp">
             <column name="Fecha" length="19" not-null="true" />
