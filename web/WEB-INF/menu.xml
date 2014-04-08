@@ -4,6 +4,5 @@
     <menu label="ICAP" path="icap.htm"/>
     <menu label="What if?" path="whatif.htm"/>
     <menu label="Mapeo" path="mapeo.htm"/>
-    <menu label="Configuración" path="configuracion.htm"/>
-    <menu label="Alta" path="path.htm"/>
+
 </menu>
