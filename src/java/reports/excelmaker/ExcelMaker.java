@@ -4,21 +4,15 @@ import db.controller.DAO;
 import db.pojos.Cuenta;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -27,7 +21,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ExcelMaker {
 
-    private static final String baseDirectory = "bases";
     private String fileName;
     private String baseName;
     private Map<String, Cuenta> datos;
@@ -38,12 +31,12 @@ public class ExcelMaker {
         this.datos = datos;
     }
 
-    public String makeFile() throws IOException, InvalidFormatException {
-        File file = new File(baseDirectory + "/" + baseName);
+    public File makeFile() throws IOException, InvalidFormatException {
+        File file = new File(baseName);
         FileInputStream fis = new FileInputStream(file);
         XSSFWorkbook wb = new XSSFWorkbook(fis);
         Sheet sheet = wb.getSheetAt(0);
-        int maxRows = 60;
+        int maxRows = 100;
         int maxColumns = 70;
         for (int t = 0; t < maxRows; t++) {
             Row row = sheet.getRow(t);
@@ -65,10 +58,12 @@ public class ExcelMaker {
                 }
             }
         }
-        FileOutputStream fileOut = new FileOutputStream(fileName);
+        File fileOutput=new File(fileName);
+        FileOutputStream fileOut = new FileOutputStream(fileOutput);
         wb.write(fileOut);
+        fileOut.flush();
         fileOut.close();
-        return fileName;
+        return fileOutput;
     }
 
     public static void main(String[] args) throws IOException, InvalidFormatException, InvalidFormatException {
@@ -78,7 +73,7 @@ public class ExcelMaker {
             map.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
         }
         ExcelMaker ex = new ExcelMaker("archivo.xlsx", "baseRC01.xlsx", map);
-        String makeFile = ex.makeFile();
+//        String makeFile = ex.makeFile();
     }
 
     private String getValue(Cell cell) {

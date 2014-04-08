@@ -15,6 +15,7 @@
     <property name="hibernate.c3p0.idle_test_period">150</property>
     <property name="hibernate.cache.use_query_cache">false</property>
     <property name="hibernate.cache.use_second_level_cache">false</property>
+    <mapping resource="db/pojos/Configuracion.hbm.xml"/>
     <mapping resource="db/pojos/Regcuentauser.hbm.xml"/>
     <mapping resource="db/pojos/Tipotasa.hbm.xml"/>
     <mapping resource="db/pojos/Calificacion.hbm.xml"/>
@@ -27,6 +28,7 @@
     <mapping resource="db/pojos/Tipousuario.hbm.xml"/>
     <mapping resource="db/pojos/User.hbm.xml"/>
     <mapping resource="db/pojos/Catalogocuenta.hbm.xml"/>
+    <mapping resource="db/pojos/Regreportes.hbm.xml"/>
     <mapping resource="db/pojos/Regcuenta.hbm.xml"/>
     <mapping resource="db/pojos/Regvector.hbm.xml"/>
     <mapping resource="db/pojos/Vector.hbm.xml"/>

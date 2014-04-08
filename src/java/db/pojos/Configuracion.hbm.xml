@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8/04/2014 05:46:30 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="db.pojos.Configuracion" table="configuracion" catalog="prueba">
+        <id name="idConfiguracion" type="java.lang.Integer">
+            <column name="IdConfiguracion" />
+            <generator class="identity" />
+        </id>
+        <property name="desConfiguracion" type="string">
+            <column name="DesConfiguracion" />
+        </property>
+        <property name="valor" type="string">
+            <column name="Valor" />
+        </property>
+    </class>
+</hibernate-mapping>
