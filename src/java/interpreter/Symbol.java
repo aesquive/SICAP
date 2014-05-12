@@ -69,7 +69,26 @@ public class Symbol {
 
             return String.valueOf(Math.max(value1, value2));
         }
-        
+        //minimo bool
+        if(sym.equals("B")) {
+            
+            if(value1 < value2)
+              return String.valueOf(Double.valueOf("1.0"));
+            else
+              return String.valueOf(Double.valueOf("0.0")); 
+        }
+        //maximo bool
+        if(sym.equals("A")) {
+            
+            if(value1 > value2)
+              return String.valueOf(Double.valueOf("1"));
+            else
+              return String.valueOf(Double.valueOf("0")); 
+        }
+        //round
+         if(sym.equals("R")){
+             return String.valueOf(Math.round(value1*Math.pow(10,value2))/Math.pow(10,value2));
+         }
         return null;
     }
 

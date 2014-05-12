@@ -1,5 +1,5 @@
 package db.pojos;
-// Generated 30/03/2014 11:04:46 PM by Hibernate Tools 3.6.0
+// Generated 5/05/2014 10:56:00 PM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -15,8 +15,13 @@ public class Regcuenta  implements java.io.Serializable,Cloneable {
      private Integer idRegCuenta;
      private String desRegCuenta;
      private Date fecha;
+     private Set disponibilidads = new HashSet(0);
+     private Set carteracomercials = new HashSet(0);
+     private Set valoreses = new HashSet(0);
+     private Set tarjetacreditos = new HashSet(0);
      private Set regcuentausers = new HashSet(0);
      private Set cuentas = new HashSet(0);
+     private Set captacions = new HashSet(0);
 
     public Regcuenta() {
     }
@@ -25,11 +30,16 @@ public class Regcuenta  implements java.io.Serializable,Cloneable {
     public Regcuenta(String desRegCuenta) {
         this.desRegCuenta = desRegCuenta;
     }
-    public Regcuenta(String desRegCuenta, Date fecha, Set regcuentausers, Set cuentas) {
+    public Regcuenta(String desRegCuenta, Date fecha, Set disponibilidads, Set carteracomercials, Set valoreses, Set tarjetacreditos, Set regcuentausers, Set cuentas, Set captacions) {
        this.desRegCuenta = desRegCuenta;
        this.fecha = fecha;
+       this.disponibilidads = disponibilidads;
+       this.carteracomercials = carteracomercials;
+       this.valoreses = valoreses;
+       this.tarjetacreditos = tarjetacreditos;
        this.regcuentausers = regcuentausers;
        this.cuentas = cuentas;
+       this.captacions = captacions;
     }
    
     public Integer getIdRegCuenta() {
@@ -53,6 +63,34 @@ public class Regcuenta  implements java.io.Serializable,Cloneable {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+    public Set getDisponibilidads() {
+        return this.disponibilidads;
+    }
+    
+    public void setDisponibilidads(Set disponibilidads) {
+        this.disponibilidads = disponibilidads;
+    }
+    public Set getCarteracomercials() {
+        return this.carteracomercials;
+    }
+    
+    public void setCarteracomercials(Set carteracomercials) {
+        this.carteracomercials = carteracomercials;
+    }
+    public Set getValoreses() {
+        return this.valoreses;
+    }
+    
+    public void setValoreses(Set valoreses) {
+        this.valoreses = valoreses;
+    }
+    public Set getTarjetacreditos() {
+        return this.tarjetacreditos;
+    }
+    
+    public void setTarjetacreditos(Set tarjetacreditos) {
+        this.tarjetacreditos = tarjetacreditos;
+    }
     public Set getRegcuentausers() {
         return this.regcuentausers;
     }
@@ -67,6 +105,13 @@ public class Regcuenta  implements java.io.Serializable,Cloneable {
     public void setCuentas(Set cuentas) {
         this.cuentas = cuentas;
     }
+    public Set getCaptacions() {
+        return this.captacions;
+    }
+    
+    public void setCaptacions(Set captacions) {
+        this.captacions = captacions;
+    }
 
 
      @Override
@@ -79,6 +124,9 @@ public class Regcuenta  implements java.io.Serializable,Cloneable {
         return super.clone();
     }
     
+
+
+
 }
 
 

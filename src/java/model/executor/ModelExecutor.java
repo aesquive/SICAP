@@ -135,6 +135,7 @@ public class ModelExecutor {
         }
         //a este momento ya todas las cuentas de referencia deben estar hechas , entonces ahora si realizamos la operacion
         String interp = MathInterpreter.interp(operacion.getValOperacion(), valores);
+        interp=interp==null ? "0.0" : interp;
         Cuenta nueva = new Cuenta(null, regCuenta, operacion.getCatalogocuenta(), Double.valueOf(interp), ctasRef, 0);
         if (isSimulation) {
             nueva = todasCuentas.get(operacion.getCatalogocuenta().getIdCatalogoCuenta().toString());

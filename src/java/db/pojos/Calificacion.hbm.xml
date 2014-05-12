@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 5/04/2014 12:20:46 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 5/05/2014 10:56:03 PM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="db.pojos.Calificacion" table="calificacion" catalog="prueba">
         <id name="idCalificacion" type="java.lang.Integer">
@@ -14,29 +14,23 @@
         <property name="calificacion" type="string">
             <column name="Calificacion" />
         </property>
-        <set name="vectorsForIdCalificacionHr" table="vector" inverse="true" lazy="true" fetch="select">
+        <set name="valoresesForIdCalificacion3" table="valores" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="IdCalificacionHR" />
+                <column name="IdCalificacion3" />
             </key>
-            <one-to-many class="db.pojos.Vector" />
+            <one-to-many class="db.pojos.Valores" />
         </set>
-        <set name="vectorsForIdCalificacionFitch" table="vector" inverse="true" lazy="true" fetch="select">
+        <set name="valoresesForIdCalificacion1" table="valores" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="IdCalificacionFitch" />
+                <column name="IdCalificacion1" />
             </key>
-            <one-to-many class="db.pojos.Vector" />
+            <one-to-many class="db.pojos.Valores" />
         </set>
-        <set name="vectorsForIdCalificacionSp" table="vector" inverse="true" lazy="true" fetch="select">
+        <set name="valoresesForIdCalificacion2" table="valores" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="IdCalificacionSP" />
+                <column name="IdCalificacion2" />
             </key>
-            <one-to-many class="db.pojos.Vector" />
-        </set>
-        <set name="vectorsForIdCalificacionMoody" table="vector" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="IdCalificacionMoody" />
-            </key>
-            <one-to-many class="db.pojos.Vector" />
+            <one-to-many class="db.pojos.Valores" />
         </set>
     </class>
 </hibernate-mapping>

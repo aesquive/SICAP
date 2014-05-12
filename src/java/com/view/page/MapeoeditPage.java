@@ -3,7 +3,7 @@ package com.view.page;
 import db.controller.DAO;
 import db.pojos.Calificacion;
 import db.pojos.Tipotasa;
-import db.pojos.Vector;
+import file.uploader.vector.Vector;
 import java.util.List;
 import manager.session.SessionController;
 import manager.session.Variable;

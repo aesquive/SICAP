@@ -1,5 +1,5 @@
 package db.pojos;
-// Generated 5/04/2014 12:20:41 AM by Hibernate Tools 3.6.0
+// Generated 5/05/2014 10:56:00 PM by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -14,21 +14,19 @@ public class Calificacion  implements java.io.Serializable {
      private Integer idCalificacion;
      private Calificadora calificadora;
      private String calificacion;
-     private Set vectorsForIdCalificacionHr = new HashSet(0);
-     private Set vectorsForIdCalificacionFitch = new HashSet(0);
-     private Set vectorsForIdCalificacionSp = new HashSet(0);
-     private Set vectorsForIdCalificacionMoody = new HashSet(0);
+     private Set valoresesForIdCalificacion3 = new HashSet(0);
+     private Set valoresesForIdCalificacion1 = new HashSet(0);
+     private Set valoresesForIdCalificacion2 = new HashSet(0);
 
     public Calificacion() {
     }
 
-    public Calificacion(Calificadora calificadora, String calificacion, Set vectorsForIdCalificacionHr, Set vectorsForIdCalificacionFitch, Set vectorsForIdCalificacionSp, Set vectorsForIdCalificacionMoody) {
+    public Calificacion(Calificadora calificadora, String calificacion, Set valoresesForIdCalificacion3, Set valoresesForIdCalificacion1, Set valoresesForIdCalificacion2) {
        this.calificadora = calificadora;
        this.calificacion = calificacion;
-       this.vectorsForIdCalificacionHr = vectorsForIdCalificacionHr;
-       this.vectorsForIdCalificacionFitch = vectorsForIdCalificacionFitch;
-       this.vectorsForIdCalificacionSp = vectorsForIdCalificacionSp;
-       this.vectorsForIdCalificacionMoody = vectorsForIdCalificacionMoody;
+       this.valoresesForIdCalificacion3 = valoresesForIdCalificacion3;
+       this.valoresesForIdCalificacion1 = valoresesForIdCalificacion1;
+       this.valoresesForIdCalificacion2 = valoresesForIdCalificacion2;
     }
    
     public Integer getIdCalificacion() {
@@ -52,33 +50,26 @@ public class Calificacion  implements java.io.Serializable {
     public void setCalificacion(String calificacion) {
         this.calificacion = calificacion;
     }
-    public Set getVectorsForIdCalificacionHr() {
-        return this.vectorsForIdCalificacionHr;
+    public Set getValoresesForIdCalificacion3() {
+        return this.valoresesForIdCalificacion3;
     }
     
-    public void setVectorsForIdCalificacionHr(Set vectorsForIdCalificacionHr) {
-        this.vectorsForIdCalificacionHr = vectorsForIdCalificacionHr;
+    public void setValoresesForIdCalificacion3(Set valoresesForIdCalificacion3) {
+        this.valoresesForIdCalificacion3 = valoresesForIdCalificacion3;
     }
-    public Set getVectorsForIdCalificacionFitch() {
-        return this.vectorsForIdCalificacionFitch;
-    }
-    
-    public void setVectorsForIdCalificacionFitch(Set vectorsForIdCalificacionFitch) {
-        this.vectorsForIdCalificacionFitch = vectorsForIdCalificacionFitch;
-    }
-    public Set getVectorsForIdCalificacionSp() {
-        return this.vectorsForIdCalificacionSp;
+    public Set getValoresesForIdCalificacion1() {
+        return this.valoresesForIdCalificacion1;
     }
     
-    public void setVectorsForIdCalificacionSp(Set vectorsForIdCalificacionSp) {
-        this.vectorsForIdCalificacionSp = vectorsForIdCalificacionSp;
+    public void setValoresesForIdCalificacion1(Set valoresesForIdCalificacion1) {
+        this.valoresesForIdCalificacion1 = valoresesForIdCalificacion1;
     }
-    public Set getVectorsForIdCalificacionMoody() {
-        return this.vectorsForIdCalificacionMoody;
+    public Set getValoresesForIdCalificacion2() {
+        return this.valoresesForIdCalificacion2;
     }
     
-    public void setVectorsForIdCalificacionMoody(Set vectorsForIdCalificacionMoody) {
-        this.vectorsForIdCalificacionMoody = vectorsForIdCalificacionMoody;
+    public void setValoresesForIdCalificacion2(Set valoresesForIdCalificacion2) {
+        this.valoresesForIdCalificacion2 = valoresesForIdCalificacion2;
     }
 
 

@@ -16,21 +16,25 @@
     <property name="hibernate.cache.use_query_cache">false</property>
     <property name="hibernate.cache.use_second_level_cache">false</property>
     <mapping resource="db/pojos/Configuracion.hbm.xml"/>
+    <mapping resource="db/pojos/Carteraconsumo.hbm.xml"/>
+    <mapping resource="db/pojos/Valores.hbm.xml"/>
     <mapping resource="db/pojos/Regcuentauser.hbm.xml"/>
+    <mapping resource="db/pojos/Captacion.hbm.xml"/>
+    <mapping resource="db/pojos/Tarjetacredito.hbm.xml"/>
     <mapping resource="db/pojos/Tipotasa.hbm.xml"/>
     <mapping resource="db/pojos/Calificacion.hbm.xml"/>
     <mapping resource="db/pojos/Tipoinstrumento.hbm.xml"/>
     <mapping resource="db/pojos/Calificadora.hbm.xml"/>
     <mapping resource="db/pojos/Operacion.hbm.xml"/>
     <mapping resource="db/pojos/Cuenta.hbm.xml"/>
-    <mapping resource="db/pojos/Tenencia.hbm.xml"/>
     <mapping resource="db/pojos/Moneda.hbm.xml"/>
+    <mapping resource="db/pojos/Carteracomercial.hbm.xml"/>
     <mapping resource="db/pojos/Tipousuario.hbm.xml"/>
     <mapping resource="db/pojos/User.hbm.xml"/>
     <mapping resource="db/pojos/Catalogocuenta.hbm.xml"/>
     <mapping resource="db/pojos/Regreportes.hbm.xml"/>
     <mapping resource="db/pojos/Regcuenta.hbm.xml"/>
     <mapping resource="db/pojos/Regvector.hbm.xml"/>
-    <mapping resource="db/pojos/Vector.hbm.xml"/>
+    <mapping resource="db/pojos/Disponibilidad.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

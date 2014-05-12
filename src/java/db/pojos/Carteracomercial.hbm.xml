@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 5/05/2014 10:56:03 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="db.pojos.Carteracomercial" table="carteracomercial" catalog="prueba">
+        <id name="idCarteraComercial" type="java.lang.Integer">
+            <column name="IdCarteraComercial" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="regcuenta" class="db.pojos.Regcuenta" fetch="select">
+            <column name="IdRegCuenta" />
+        </many-to-one>
+        <property name="fecha" type="timestamp">
+            <column name="Fecha" length="19" />
+        </property>
+        <property name="idCuentaContable" type="java.lang.Long">
+            <column name="IdCuentaContable" />
+        </property>
+        <property name="idCredito" type="java.lang.Long">
+            <column name="IdCredito" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="Descripcion" />
+        </property>
+        <property name="fechaRevisionTasa" type="timestamp">
+            <column name="FechaRevisionTasa" length="19" />
+        </property>
+        <property name="fechaVencimiento" type="timestamp">
+            <column name="FechaVencimiento" length="19" />
+        </property>
+        <property name="capital" type="java.lang.Double">
+            <column name="Capital" precision="15" scale="5" />
+        </property>
+        <property name="interes" type="java.lang.Double">
+            <column name="Interes" precision="15" scale="5" />
+        </property>
+        <property name="saldoPagar" type="java.lang.Double">
+            <column name="SaldoPagar" precision="15" scale="5" />
+        </property>
+        <property name="saldoInsoluto" type="java.lang.Double">
+            <column name="SaldoInsoluto" precision="15" scale="5" />
+        </property>
+        <property name="provisionCrediticia" type="java.lang.Double">
+            <column name="ProvisionCrediticia" precision="15" scale="5" />
+        </property>
+        <property name="tipoCredito" type="java.lang.Integer">
+            <column name="TipoCredito" />
+        </property>
+        <property name="creditoRelevante" type="java.lang.Integer">
+            <column name="CreditoRelevante" />
+        </property>
+        <property name="exposicionRiesgo" type="java.lang.Double">
+            <column name="ExposicionRiesgo" precision="15" scale="5" />
+        </property>
+        <property name="numeroPagosFuturos" type="java.lang.Double">
+            <column name="NumeroPagosFuturos" precision="15" scale="5" />
+        </property>
+    </class>
+</hibernate-mapping>

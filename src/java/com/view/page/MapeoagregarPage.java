@@ -4,7 +4,7 @@ import db.controller.DAO;
 import db.pojos.Calificacion;
 import db.pojos.Regvector;
 import db.pojos.Tipotasa;
-import db.pojos.Vector;
+import file.uploader.vector.Vector;
 import file.uploader.vector.VectorPIPReader;
 import file.uploader.vector.VectorReader;
 import java.io.File;

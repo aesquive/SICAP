@@ -3,7 +3,6 @@ package file.uploader.vector;
 import db.controller.DAO;
 import db.pojos.Calificacion;
 import db.pojos.Tipotasa;
-import db.pojos.Vector;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;

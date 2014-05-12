@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 5/05/2014 10:56:03 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="db.pojos.Tarjetacredito" table="tarjetacredito" catalog="prueba">
+        <id name="idTarjetaCredito" type="java.lang.Integer">
+            <column name="IdTarjetaCredito" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="regcuenta" class="db.pojos.Regcuenta" fetch="select">
+            <column name="IdRegCuenta" />
+        </many-to-one>
+        <property name="fecha" type="timestamp">
+            <column name="Fecha" length="19" />
+        </property>
+        <property name="idCuentaContable" type="java.lang.Long">
+            <column name="IdCuentaContable" />
+        </property>
+        <property name="idCredito" type="string">
+            <column name="IdCredito" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="Descripcion" />
+        </property>
+        <property name="saldoInsoluto" type="java.lang.Double">
+            <column name="SaldoInsoluto" precision="10" scale="5" />
+        </property>
+        <property name="fechaCorte" type="timestamp">
+            <column name="FechaCorte" length="19" />
+        </property>
+        <property name="tipoTarjeta" type="string">
+            <column name="TipoTarjeta" />
+        </property>
+        <property name="relevante" type="java.lang.Integer">
+            <column name="Relevante" />
+        </property>
+        <property name="provisionCrediticia" type="java.lang.Double">
+            <column name="ProvisionCrediticia" precision="10" scale="5" />
+        </property>
+        <property name="duracion" type="java.lang.Double">
+            <column name="Duracion" precision="10" scale="5" />
+        </property>
+    </class>
+</hibernate-mapping>

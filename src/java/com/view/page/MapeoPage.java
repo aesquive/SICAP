@@ -1,8 +1,8 @@
 package com.view.page;
 
 import db.controller.DAO;
-import db.pojos.Vector;
 import java.util.List;
+import java.util.Vector;
 import manager.session.SessionController;
 import manager.session.Variable;
 import org.apache.click.control.Form;
@@ -36,7 +36,7 @@ public class MapeoPage extends BorderPage {
     private void fillInstrument() {
         instruments = DAO.createQuery(Vector.class, null);
         for (Vector v : instruments) {
-            select.add(new Option(v.getIdVector(), v.getIdTipoInstrumento() + v.getEmisioraInstrumento() + v.getSerieInstrumento()));
+      //      select.add(new Option(v.getIdVector(), v.getIdTipoInstrumento() + v.getEmisioraInstrumento() + v.getSerieInstrumento()));
         }
     }
 
@@ -55,9 +55,9 @@ public class MapeoPage extends BorderPage {
         SessionController controller = UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).getSessionController(UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).actualContext);
         Vector chosen = null;
         for (Vector v : instruments) {
-            if (Integer.parseInt(select.getValue()) == v.getIdVector()) {
-                chosen = v;
-            }
+        //    if (Integer.parseInt(select.getValue()) == v.getIdVector()) {
+          //      chosen = v;
+            //}
         }
         if (chosen == null) {
             message = "Se debe elegir un Instrumento a Editar";
