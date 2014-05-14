@@ -69,6 +69,10 @@ public class ReportesPage extends BorderPage {
                 selectedReport = r;
             }
         }
+        if(selected==null || selectedReport==null){
+            message="Se debe seleccionar algun ejercicio";
+            return false;
+        }
         String path = "";
         List<Configuracion> createQuery = DAO.createQuery(Configuracion.class, null);
         for (Configuracion co : createQuery) {

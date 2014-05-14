@@ -2,6 +2,7 @@ package db.controller;
 
 import db.pojos.Calificadora;
 import db.pojos.Cuenta;
+import db.pojos.Regcuenta;
 import java.util.List;
 import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
@@ -75,5 +76,12 @@ public class DAO {
     public static void main(String[] args) {
         List<Calificadora> createQuery = DAO.createQuery(Calificadora.class, null);
         System.out.println(createQuery.get(0).getDesCalificadora());
+    }
+
+    public static void delete(Object object) {
+        session.delete(object);
+        session.flush();
+        session.clear();
+    
     }
 }
