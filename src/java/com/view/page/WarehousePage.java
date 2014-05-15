@@ -80,7 +80,9 @@ public class WarehousePage extends BorderPage {
             userSelect.add(new Option(u.getUser()));
         }
         form.add(userSelect);
-        form.add(new Submit("sub", "Procesar", this, "procesarClicked"));
+        Submit sub=new Submit("sub", "Procesar", this, "procesarClicked");
+        javaScriptProcess(sub);
+        form.add(sub);
 
         addControl(form);
 

@@ -1,3 +1,22 @@
-<center>
+<script>
+    function waitPageLogin() {
+        document.getElementById("divProcessLogin").style.display="block";
+        document.getElementById("divFormLogin").style.display="none";
+    }
+    
+    function stopWaitingLogin(){
+        document.getElementById("divProcessLogin").style.display="none";
+        document.getElementById("divFormLogin").style.display="block";
+    }
+</script>
+<div id="divProcessLogin" style="display: none;width: 150px;height: 200px;margin-left: auto;margin-right: auto">
+    <img src="img/block-loading.gif"/>
+    <br/>
+    <br/>
+    <a>Procesando...</a>
+</div>
+<div id="divFormLogin" style="display: block">
+    <center>
         $form
-</center>
+    </center>
+</div>

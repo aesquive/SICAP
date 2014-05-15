@@ -51,7 +51,9 @@ public class LoginPage extends Page {
         //le damos el setup al form
         loginForm.add(userField);
         loginForm.add(passwordField);
-        loginForm.add(new Submit("okSubmit", " Accesar ", this, "okClicked"));
+        Submit submit=new Submit("okSubmit", " Accesar ", this, "okClicked");
+        loginForm.add(submit);
+        submit.setAttribute("onclick", "waitPageLogin();");
     }
 
     /**
@@ -73,6 +75,7 @@ public class LoginPage extends Page {
     public boolean okClicked() {
         if (!loginForm.isValid()) {
             message = "Favor de completar los campos";
+            
             return false;
         }
         User user = verifyUser(userField.getValue(), passwordField.getValue());

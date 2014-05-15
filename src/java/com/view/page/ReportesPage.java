@@ -52,7 +52,9 @@ public class ReportesPage extends BorderPage {
         }
         form.add(selectProject);
         form.add(selectReport);
-        form.add(new Submit("sub", "Obtener Reporte", this, "okReport"));
+        Submit sub=new Submit("sub", "Obtener Reporte", this, "okReport");
+        javaScriptProcess(sub);
+        form.add(sub);
         addControl(form);
     }
 
@@ -104,6 +106,7 @@ public class ReportesPage extends BorderPage {
         }
 
         setRedirect("/reportes/" + selected.getIdRegCuenta().toString() + "-" + selectedReport.getIdRegReportes().toString() + ".xlsx");
+        setRedirect(ReportesPage.class);
         return true;
     }
 }

@@ -6,6 +6,7 @@ import manager.session.Variable;
 import org.apache.click.Page;
 import org.apache.click.control.ActionLink;
 import org.apache.click.control.Form;
+import org.apache.click.control.Submit;
 import org.apache.click.extras.control.Menu;
 import org.apache.click.extras.control.MenuFactory;
 import util.ContextManager;
@@ -153,4 +154,8 @@ public abstract class BorderPage extends Page {
         UserManager.getContextManager(Integer.parseInt(getContext().getSessionAttribute("user").toString())).addSessionController(newSessionController);
     }
 
+    public void javaScriptProcess(Submit submit){
+        submit.setAttribute("onclick", "waitPage();");
+    }
+    
 }
