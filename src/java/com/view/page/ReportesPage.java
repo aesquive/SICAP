@@ -106,7 +106,6 @@ public class ReportesPage extends BorderPage {
         }
 
         setRedirect("/reportes/" + selected.getIdRegCuenta().toString() + "-" + selectedReport.getIdRegReportes().toString() + ".xlsx");
-        setRedirect(ReportesPage.class);
         return true;
     }
 }
