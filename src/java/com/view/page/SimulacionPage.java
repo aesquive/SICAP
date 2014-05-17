@@ -4,6 +4,7 @@ import db.controller.DAO;
 import db.pojos.Cuenta;
 import db.pojos.Regcuenta;
 import interpreter.MathInterpreterException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -129,7 +130,7 @@ public class SimulacionPage extends BorderPage {
         table.setRowList(data);
     }
 
-    public boolean simularClicked() {
+    public boolean simularClicked() throws IOException {
         try {
             Integer idRegCuenta = data.get(0).getRegcuenta().getIdRegCuenta();
             List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
@@ -139,7 +140,8 @@ public class SimulacionPage extends BorderPage {
                     mapData.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
                 }
             }
-            ModelExecutor modelExecutor = new ModelExecutor(mapData, true);
+            
+            ModelExecutor modelExecutor = new ModelExecutor(manager.configuration.Configuration.getValue("baseModelo"),mapData, true);
             modelExecutor.start();
             cambiarPantalla(data.get(0).getRegcuenta());
             return true;

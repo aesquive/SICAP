@@ -2,10 +2,12 @@
 <menu>
     <menu label="Salir" path="redirect.html"/>
     <menu label="ICAP" path="icap.htm"/>
-    <!--
     <menu label="What if?" path="whatif.htm"/>
+    <!--
+    
     <menu label="Mapeo" path="mapeo.htm"/>
     -->
+    
     <menu label="DataWarehouse" path="warehouse.htm"/> 
     <menu label="Administrador Modelos" path="administradormodelos.htm"/>
     <menu label="Reportes" path="reportes.htm"/>

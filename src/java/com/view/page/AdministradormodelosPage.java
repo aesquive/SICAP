@@ -10,7 +10,6 @@ import db.pojos.Cuenta;
 import db.pojos.Regcuenta;
 import db.pojos.Regcuentauser;
 import db.pojos.User;
-import interpreter.MathInterpreterException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +82,8 @@ public class AdministradormodelosPage extends BorderPage {
                         }
                     }
                 }
-                ModelExecutor m = new ModelExecutor(cuentas, false);
+                
+                ModelExecutor m = new ModelExecutor(manager.configuration.Configuration.getValue("baseModelo"),cuentas, false);
                 m.start();
                 setRedirect(IcapPage.class);
                 return true;

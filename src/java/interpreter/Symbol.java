@@ -18,19 +18,23 @@ public class Symbol {
             value2 = Double.parseDouble(MathInterpreter.interp(param2, variableMap));
         }
         if (String.valueOf(param1.charAt(0)).equals("=")) {
-
             Double value = variableMap.get(param1.replace("=", ""));
             if (value == null) {
-                throw new MathInterpreterException("Not existing variable " + param1.replace("=", ""));
+                System.out.println("Not existing variable " + param1.replace("=", ""));
+                value1 = 0.0;
+            } else {
+
+                value1 = value;
             }
-            value1 = value;
         }
         if (String.valueOf(param2.charAt(0)).equals("=")) {
             Double value = variableMap.get(param2.replace("=", ""));
             if (value == null) {
-                throw new MathInterpreterException("Not existing variable " + param2.replace("=", ""));
+                System.out.println("Not existing variable " + param1.replace("=", ""));
+                value2 = 0.0;
+            } else {
+                value2 = value;
             }
-            value2 = value;
         }
         if (String.valueOf(param1.charAt(0)).equals("\"")) {
             value1 = Double.parseDouble(param1.replaceAll("\"", ""));
@@ -70,25 +74,34 @@ public class Symbol {
             return String.valueOf(Math.max(value1, value2));
         }
         //minimo bool
-        if(sym.equals("B")) {
-            
-            if(value1 < value2)
-              return String.valueOf(Double.valueOf("1.0"));
-            else
-              return String.valueOf(Double.valueOf("0.0")); 
+        if (sym.equals("B")) {
+
+            if (value1 < value2) {
+                return String.valueOf(Double.valueOf("1.0"));
+            } else {
+                return String.valueOf(Double.valueOf("0.0"));
+            }
         }
         //maximo bool
-        if(sym.equals("A")) {
-            
-            if(value1 > value2)
-              return String.valueOf(Double.valueOf("1"));
-            else
-              return String.valueOf(Double.valueOf("0")); 
+        if (sym.equals("A")) {
+
+            if (value1 > value2) {
+                return String.valueOf(Double.valueOf("1"));
+            } else {
+                return String.valueOf(Double.valueOf("0"));
+            }
         }
         //round
-         if(sym.equals("R")){
-             return String.valueOf(Math.round(value1*Math.pow(10,value2))/Math.pow(10,value2));
-         }
+        if (sym.equals("R")) {
+            return String.valueOf(Math.round(value1 * Math.pow(10, value2)) / Math.pow(10, value2));
+        }
+        if(sym.equals("I")) {
+            
+            if(value1 > value2)
+              return String.valueOf(Double.valueOf(value1));
+            else
+              return String.valueOf(Double.valueOf("0"));
+        }
         return null;
     }
 

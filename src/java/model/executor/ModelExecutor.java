@@ -1,14 +1,18 @@
 package model.executor;
 
 import db.controller.DAO;
+import db.pojos.Catalogocuenta;
 import db.pojos.Cuenta;
 import db.pojos.Operacion;
 import db.pojos.Regcuenta;
 import interpreter.MathInterpreter;
 import interpreter.MathInterpreterException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import manager.configuration.Configuration;
 
 /**
  * Ejecuta todas las operaciones contenidas dentro de la base de datos de la
@@ -36,7 +40,7 @@ public class ModelExecutor {
      * @param cuentasBase
      * @param forceCalculation
      */
-    public ModelExecutor(Map<String, Cuenta> cuentasBase, boolean forceCalculation) {
+    public ModelExecutor(String baseModelo,Map<String, Cuenta> cuentasBase, boolean forceCalculation) throws IOException {
         this.cuentas = cuentasBase;
         this.todasCuentas = new HashMap<String, Cuenta>();
         this.operaciones = mapOperaciones(DAO.createQuery(Operacion.class, null));
@@ -52,6 +56,18 @@ public class ModelExecutor {
         for (String s : cuentas.keySet()) {
             valores.put(s, cuentas.get(s).getValor());
         }
+        
+        ExcelInteraction ex=new ExcelInteraction(baseModelo);
+        Map<String, Double> modelExcelData = ex.getModelExcelData();
+        Set<String> keySet = modelExcelData.keySet();
+        for(String s:keySet){
+            valores.put(s, modelExcelData.get(s));
+            Cuenta c=new Cuenta();
+            c.setCatalogocuenta(new Catalogocuenta(s));
+            c.setValor(modelExcelData.get(s));
+            cuentas.put(s, c);
+        }
+        
         this.regCuenta = cuentas.get(cuentas.keySet().iterator().next()).getRegcuenta();
     }
 
@@ -152,7 +168,7 @@ public class ModelExecutor {
      * @param args
      * @throws MathInterpreterException
      */
-    public static void main(String[] args) throws MathInterpreterException {
+    public static void main(String[] args) throws MathInterpreterException, IOException {
         Map<String, Cuenta> cuentas = new HashMap<String, Cuenta>();
         List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
         for (Cuenta c : createQuery) {
@@ -162,7 +178,9 @@ public class ModelExecutor {
                 }
             }
         }
-        ModelExecutor m = new ModelExecutor(cuentas, false);
+        String value = Configuration.getValue("baseModelo");
+        System.out.println("la base "+value);
+        ModelExecutor m = new ModelExecutor(Configuration.getValue("baseModelo"),cuentas, false);
         m.start();
         Cuenta get = cuentas.get("1");
     }

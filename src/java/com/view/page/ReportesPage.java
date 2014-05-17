@@ -22,6 +22,7 @@ import org.apache.click.control.Form;
 import org.apache.click.control.Option;
 import org.apache.click.control.Select;
 import org.apache.click.control.Submit;
+import org.apache.click.element.JsScript;
 import reports.excelmaker.ExcelMaker;
 
 /**
@@ -105,7 +106,8 @@ public class ReportesPage extends BorderPage {
             System.out.println("waisting time");
         }
 
-        setRedirect("/reportes/" + selected.getIdRegCuenta().toString() + "-" + selectedReport.getIdRegReportes().toString() + ".xlsx");
+        setRedirect("/reportes/" + selected.getIdRegCuenta().toString() + "-" + selectedReport.getIdRegReportes().toString() + ".xlsx");        
+        
         return true;
     }
 }
