@@ -132,16 +132,9 @@ public class SimulacionPage extends BorderPage {
 
     public boolean simularClicked() throws IOException {
         try {
-            Integer idRegCuenta = data.get(0).getRegcuenta().getIdRegCuenta();
-            List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
-            Map<String, Cuenta> mapData = new HashMap<String, Cuenta>();
-            for (Cuenta c : createQuery) {
-                if (c.getRegcuenta().getIdRegCuenta() == idRegCuenta && (c.getRef() == null || c.getRef().equals(""))) {
-                    mapData.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
-                }
-            }
+            Regcuenta regcuenta = data.get(0).getRegcuenta();
             
-            ModelExecutor modelExecutor = new ModelExecutor(manager.configuration.Configuration.getValue("baseModelo"),mapData, true);
+            ModelExecutor modelExecutor = new ModelExecutor(manager.configuration.Configuration.getValue("baseModelo"),regcuenta, true);
             modelExecutor.start();
             cambiarPantalla(data.get(0).getRegcuenta());
             return true;

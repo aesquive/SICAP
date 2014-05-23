@@ -74,16 +74,7 @@ public class AdministradormodelosPage extends BorderPage {
                         update = true;
                     }
                 }
-                Map<String, Cuenta> cuentas = new HashMap<String, Cuenta>();
-                for (Cuenta c : qcta) {
-                    if (c.getRegcuenta().getIdRegCuenta() == regCta.getIdRegCuenta()) {
-                        if (c.getMoneda() != null) {
-                            cuentas.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
-                        }
-                    }
-                }
-                
-                ModelExecutor m = new ModelExecutor(manager.configuration.Configuration.getValue("baseModelo"),cuentas, false);
+                ModelExecutor m = new ModelExecutor(manager.configuration.Configuration.getValue("baseModelo"),regCta, false);
                 m.start();
                 setRedirect(IcapPage.class);
                 return true;

@@ -39,8 +39,8 @@ public class ExcelInteraction {
      * @return
      * @throws IOException
      */
-    public Map<String, Double> getModelExcelData() throws IOException {
-        Map<String, Double> map = new HashMap<String, Double>();
+    public Map<Integer, Double> getModelExcelData() throws IOException {
+        Map<Integer, Double> map = new HashMap<Integer, Double>();
         File file = new File(fileName);
         FileInputStream fis = new FileInputStream(file);
         XSSFWorkbook wb = new XSSFWorkbook(fis);
@@ -54,10 +54,10 @@ public class ExcelInteraction {
             switch (cellType) {
                 case Cell.CELL_TYPE_FORMULA:
                     CellValue evaluate = evaluator.evaluate(cell);
-                    map.put(row.getCell(1).getStringCellValue(), evaluate.getNumberValue());
+                    map.put(Integer.parseInt(row.getCell(1).getStringCellValue()), evaluate.getNumberValue());
                     break;
                 case Cell.CELL_TYPE_NUMERIC:
-                    map.put(String.valueOf(row.getCell(1).getNumericCellValue()), cell.getNumericCellValue());
+                    map.put(new Double(row.getCell(1).getNumericCellValue()).intValue(), cell.getNumericCellValue());
                     break;
                 default:break;
             }

@@ -102,6 +102,15 @@ public class Symbol {
             else
               return String.valueOf(Double.valueOf("0"));
         }
+        if (sym.equals("E")) {
+
+            if (value1 <= value2) {
+               return String.valueOf(Double.valueOf("1"));
+            } else {
+                return String.valueOf(Double.valueOf("0"));
+            }
+        }
+
         return null;
     }
 

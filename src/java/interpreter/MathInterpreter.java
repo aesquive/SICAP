@@ -45,7 +45,6 @@ public class MathInterpreter {
             if(numeroParentesis>1 && parentesisAbren==parentesisCierran){
                 symbol=String.valueOf(expr.charAt(t-1));
                 param1=expr.substring(1, t-2);
-                System.out.println(expr);
                 param2=expr.substring(t+1, expr.length()-1);
             }
             if(String.valueOf(expr.charAt(t)).equals("(")){

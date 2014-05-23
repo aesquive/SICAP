@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import manager.configuration.Configuration;
+import org.hibernate.criterion.Criterion;
 
 /**
  * Ejecuta todas las operaciones contenidas dentro de la base de datos de la
@@ -27,49 +28,59 @@ public class ModelExecutor {
     /**
      * son las cuentas con las cuales se va a correr el modelo
      */
-    public Map<String, Cuenta> todasCuentas;
     public Map<String, Cuenta> cuentas;
     public Map<String, Double> valores;
     public Map<String, Operacion> operaciones;
     public boolean isSimulation;
     public Regcuenta regCuenta;
+    private Criterion[] criterios;
 
-    /**
-     * constructor
-     *
-     * @param cuentasBase
-     * @param forceCalculation
-     */
-    public ModelExecutor(String baseModelo, Map<String, Cuenta> cuentasBase, boolean forceCalculation) throws IOException {
-        this.cuentas = cuentasBase;
-        this.todasCuentas = new HashMap<String, Cuenta>();
-        this.operaciones = mapOperaciones(DAO.createQuery(Operacion.class, null));
-        this.valores = new HashMap<String, Double>();
-        this.isSimulation = forceCalculation;
-        List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
-        for (Cuenta c : createQuery) {
-            Cuenta get = cuentas.get(cuentas.keySet().iterator());
-            if (get!=null && c.getRegcuenta().getIdRegCuenta() ==get.getRegcuenta().getIdRegCuenta()) {
-                todasCuentas.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
+    public ModelExecutor(String baseModelo, Regcuenta regCuenta, boolean isSimulation) throws IOException {
+        if(!isSimulation){
+            Set<Cuenta> cuentas1 = regCuenta.getCuentas();
+            for(Cuenta c:cuentas1){
+                if(c.getMoneda()==null){
+                    System.out.println("borrando"+c.getCatalogocuenta().getIdCatalogoCuenta());
+                    DAO.delete(c);
+                }
             }
         }
-
-        for (String s : cuentas.keySet()) {
-            valores.put(s, cuentas.get(s).getValor());
-        }
-
+        this.valores = new HashMap<String, Double>();
+        this.cuentas = new HashMap<String, Cuenta>();
+        this.operaciones = mapOperaciones(DAO.createQuery(Operacion.class, null));
+        this.isSimulation = isSimulation;
+        this.regCuenta = regCuenta;
+        mapCuentas((List<Cuenta>) DAO.createQuery(Cuenta.class, null));
+        //sacamos los datos del modelo de excel
         ExcelInteraction ex = new ExcelInteraction(baseModelo);
-        Map<String, Double> modelExcelData = ex.getModelExcelData();
-        Set<String> keySet = modelExcelData.keySet();
-        for (String s : keySet) {
-            valores.put(s, modelExcelData.get(s));
-            Cuenta c = new Cuenta();
-            c.setCatalogocuenta(new Catalogocuenta(s));
-            c.setValor(modelExcelData.get(s));
-            cuentas.put(s, c);
+        Map<Integer, Double> modelExcelData = ex.getModelExcelData();
+        //sacamos los datos del mapeo de catalogos de cuentas
+        List<Catalogocuenta> queryCatalogos = DAO.createQuery(Catalogocuenta.class, criterios);
+        Map<Integer, Catalogocuenta> mapCatalogosCuentas = new HashMap<Integer, Catalogocuenta>();
+        for (Catalogocuenta c : queryCatalogos) {
+            mapCatalogosCuentas.put(c.getIdCatalogoCuenta().intValue(), c);
         }
-
-        this.regCuenta = cuentas.get(cuentas.keySet().iterator().next()).getRegcuenta();
+        //generamos las nuevas cuentas
+        for (Integer s : modelExcelData.keySet()) {
+            System.out.println("intentando " + s);
+            Cuenta c;
+            if (isSimulation) {
+                c = cuentas.get(String.valueOf(s));
+            } else {
+                c = new Cuenta();
+            }
+            c.setCatalogocuenta(mapCatalogosCuentas.get(s));
+            c.setValor(modelExcelData.get(s));
+            c.setRegcuenta(regCuenta);
+            c.setRef("");
+            guardarCuenta(c);
+        }
+        
+        mapCuentas((List<Cuenta>) DAO.createQuery(Cuenta.class, null));
+        for(String s:cuentas.keySet()){
+            Cuenta c=cuentas.get(s);
+            valores.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(),c.getValor());
+        }
     }
 
     public void start() throws MathInterpreterException {
@@ -140,22 +151,27 @@ public class ModelExecutor {
                 } else {
                     idRef = idRef + split[t].charAt(i);
                 }
-
             }
+            //checamos si necesitamos calcular alguna otra cosa ante
             if (cuentas.get(idRef) == null) {
                 System.out.println("solicito " + idRef);
-                makeOperacion(operaciones.get(idRef));
+                if (operaciones.get(idRef) != null) {
+                    System.out.println("la operacion " + operaciones.get(idRef).getValOperacion());
+                    makeOperacion(operaciones.get(idRef));
+                }
             }
+            //agregamos 
             Cuenta ctaRef = cuentas.get(idRef);
-            ctasRef = ctasRef.equals("") ? ctaRef.getIdCuenta() + "," : ctasRef + ctaRef.getIdCuenta() + ",";
-
+            if (ctaRef != null) {
+                ctasRef = ctasRef.equals("") ? ctaRef.getIdCuenta() + "," : ctasRef + ctaRef.getIdCuenta() + ",";
+            }
         }
         //a este momento ya todas las cuentas de referencia deben estar hechas , entonces ahora si realizamos la operacion
         String interp = MathInterpreter.interp(operacion.getValOperacion(), valores);
         interp = interp == null ? "0.0" : interp;
         Cuenta nueva = new Cuenta(null, regCuenta, operacion.getCatalogocuenta(), Double.valueOf(interp), ctasRef, 0);
         if (isSimulation) {
-            nueva = todasCuentas.get(operacion.getCatalogocuenta().getIdCatalogoCuenta().toString());
+            nueva = cuentas.get(operacion.getCatalogocuenta().getIdCatalogoCuenta().toString());
             nueva.setValor(Double.valueOf(interp));
         }
         guardarCuenta(nueva);
@@ -170,19 +186,17 @@ public class ModelExecutor {
      * @throws MathInterpreterException
      */
     public static void main(String[] args) throws MathInterpreterException, IOException {
-        int regCuenta=7;
+        int regCuenta = 8;
         Map<String, Cuenta> cuentas = new HashMap<String, Cuenta>();
-        List<Cuenta> createQuery = DAO.createQuery(Cuenta.class, null);
-        for (Cuenta c : createQuery) {
-            if (c.getRegcuenta().getIdRegCuenta() == regCuenta) {
-                if (c.getMoneda() != null && c.getMoneda().getIdMoneda() == 14) {
-                    cuentas.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
-                }
+        List<Regcuenta> createQuery = DAO.createQuery(Regcuenta.class, null);
+        Regcuenta c = new Regcuenta();
+        for (Regcuenta r : createQuery) {
+            if (r.getIdRegCuenta() == regCuenta) {
+                c = r;
             }
         }
         String value = Configuration.getValue("baseModelo");
-        System.out.println("la base " + value);
-        ModelExecutor m = new ModelExecutor(Configuration.getValue("baseModelo"), cuentas, false);
+        ModelExecutor m = new ModelExecutor(Configuration.getValue("baseModelo"), c, false);
         m.start();
         Cuenta get = cuentas.get("1");
     }
@@ -192,5 +206,14 @@ public class ModelExecutor {
             DAO.update(obj);
         }
         DAO.saveOrUpdate(obj);
+    }
+
+    private void mapCuentas(List<Cuenta> list) {
+        cuentas.clear();
+        for (Cuenta c : list) {
+            if (c.getRegcuenta().getIdRegCuenta() == regCuenta.getIdRegCuenta()) {
+                    cuentas.put(c.getCatalogocuenta().getIdCatalogoCuenta().toString(), c);
+            }
+        }
     }
 }
